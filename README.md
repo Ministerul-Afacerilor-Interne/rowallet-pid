@@ -1,17 +1,17 @@
 # Romanian PID Rulebook
 
-The national Rulebook for natural-person **Person Identification Data (PID)** issued in Romania: how a Romanian PID is composed, encoded, issued and presented within the national European Digital Identity Wallet ecosystem. It is a national profile of the EU PID Rulebook (ARF Annex 3.01) — it restates the requirements that apply to Romanian PIDs and adds the provisions the EU instruments leave to Member States.
+The national Rulebook for natural-person **Person Identification Data (PID)** issued in Romania: how a Romanian PID is composed, encoded, issued and presented within the national European Digital Identity Wallet ecosystem. It is a national profile of the EU PID Rulebook (ARF Annex 3.01) - it restates the requirements that apply to Romanian PIDs and adds the provisions the EU instruments leave to Member States.
 
-Authored and maintained by the Ministry of Internal Affairs — Direcția Generală pentru Evidența Persoanelor (**DGEP**), the PID Provider. The Wallet Provider is the Ministry of Internal Affairs — Direcția Generală pentru Comunicații și Tehnologia Informației (**DGCTI**).
+Authored and maintained by the Ministry of Internal Affairs, Direcția Generală pentru Evidența Persoanelor (**DGEP**), the PID Provider. The Wallet Provider is the Ministry of Internal Affairs, Direcția Generală pentru Comunicații și Tehnologia Informației (**DGCTI**).
 
 ## Status
 
-**Version 0.1 — Phase 1 Draft, 31 August 2026.** Four things to know before reading further:
+**Version 0.1 - Phase 1 Draft, 31 August 2026.** Four things to know before reading further:
 
 - **Scope.** This version governs the issuance of Romanian PIDs to **Romanian citizens**. The issuance of a PID to a foreign national resident in Romania is out of scope of this version.
 - **The Rulebook cannot presently be notified or assessed as a whole.** Sections 5.2 to 5.4, Chapter 7 and Annex A carry no content, and 25 of the 61 provision identifiers are reserved against them. This is the intended state of a phase 1 draft, not an oversight. **Annex D** registers what is open; **Annexes B and C** record, requirement by requirement, what is and is not transposed.
 - **Provision identifiers are not stable between draft versions.** While the Rulebook is a draft the numbering closes up whenever a provision is removed, so a citation should name the version it was taken from. From the first published version onwards an identifier will be retired rather than reassigned.
-- Text marked **`UNDER REVIEW`** is unsettled. Where such a passage reads *"To be established — under analysis"*, nothing is required by it and it cannot be implemented against.
+- Text marked **`UNDER REVIEW`** is unsettled. Where such a passage reads *"To be established - under analysis"*, nothing is required by it and it cannot be implemented against.
 
 ## The documents
 
