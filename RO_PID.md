@@ -2,11 +2,11 @@
 
 **National Rulebook for natural-person Person Identification Data issued in Romania**
 
-Ministry of Internal Affairs — General Directorate for Persons' Records (DGEP), PID Provider<br>
-Ministry of Internal Affairs — Directorate-General for Communications and Information Technology (DGCTI), Wallet Provider
+Ministry of Internal Affairs - General Directorate for Persons' Records (DGEP), PID Provider<br>
+Ministry of Internal Affairs - Directorate-General for Communications and Information Technology (DGCTI), Wallet Provider
 
 **Author:** Ministerul Afacerilor Interne, Direcția Generală pentru Evidența Persoanelor<br>
-**Previous authors:** none — this is the first edition of this Rulebook.<br>
+**Previous authors:** none - this is the first edition of this Rulebook.<br>
 **Feedback:** feedback.pidrulebook@mai.gov.ro
 
 ---
