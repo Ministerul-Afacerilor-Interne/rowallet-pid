@@ -3,7 +3,7 @@
 **Companion to `RO_PID.md`, the Romanian PID Rulebook. Accompanies version 0.1 of that document.**
 
 **Author:** Ministerul Afacerilor Interne, Direcția Generală pentru Evidența Persoanelor<br>
-**Version:** 0.1 — 31 Aug 2026<br>
+**Version:** 0.1 31 Aug 2026<br>
 **Feedback:** feedback.pidrulebook@mai.gov.ro<br>
 **Status:** **Not normative.** `RO_PID.md` governs; where this document and the Rulebook differ, the Rulebook prevails and this document is to be corrected. RO_PID_61(d) requires each review of the Rulebook to verify that this document still agrees with its Chapters 2, 3 and 4.
 
