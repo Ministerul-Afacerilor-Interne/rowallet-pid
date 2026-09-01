@@ -40,10 +40,8 @@ jobs:
               with open(filepath, 'r', encoding='utf-8') as f:
                   content = f.read()
 
-              # Extrage toate blocurile de cod JSON
               json_blocks = re.findall(r'\`\`\`json\n(.*?)\n\`\`\`', content, re.DOTALL)
               for idx, block in enumerate(json_blocks):
-                  # Sare peste blocurile ce conțin placeholder tags explicite (ex: <credential-issuer>)
                   if '<' in block and '>' in block:
                       continue
                   try:
