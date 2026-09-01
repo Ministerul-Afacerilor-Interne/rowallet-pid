@@ -317,6 +317,12 @@ Requirement ARB_02 in Topic 12 in Annex 2 of the ARF obliges the author of an At
 
 *Why that is the better answer.* An activation performed after issuance has to re-establish something already established minutes earlier at the counter, and every re-establishment is another chance to get it wrong. The two scans already prove that the device completing the enrolment is the device that started it and that the User authorised issuance from it in person. Adding a further step would satisfy the wording of ISSU_05 while delivering nothing the process had not already delivered, which is the no-op the requirement exists to prevent rather than to produce.
 
+## RO_PID_32a — DGEP and recognized Wallet Solutions SHALL support a secure procedure for migrating or recovering an…
+
+*Why device migration and recovery must be explicitly specified.* Under assurance level high, private keys held in a Wallet Secure Cryptographic Device (WSCD) are non-exportable by design. Consequently, standard operating system backups (such as Apple iCloud Keychain or Google Cloud Backup) cannot restore wallet functionality on a new smartphone.
+
+Without an explicit migration protocol, every phone replacement, hardware upgrade, or application reinstallation would treat the User as an unverified stranger, needlessly forcing an in-person counter visit and prematurely terminating a logical PID before its four-year administrative validity period (RO_PID_13) expires. Providing a cryptographic device-to-device migration mechanism and remote recovery via electronic documents preserves continuity of service while ensuring that only one physical Wallet Unit holds active technical PIDs for a given logical PID at any time.
+
 **The entries below explain provisions that carry no content.** Their identifiers are reserved in
 version 0.1 and the text they once explained is held by DGEP. They are kept because the argument for a
 deferred design is the thing most easily lost between a decision being put off and the same decision

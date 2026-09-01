@@ -873,6 +873,14 @@ For a Romanian PID, activation is performed by the two scans at **steps 5 and 8*
 
 *Transposes requirement ISSU_05 in Topic 10 in Annex 2 of the ARF, which cites that Section.*
 
+**RO_PID_32a** — DGEP and recognized Wallet Solutions SHALL support a secure procedure for migrating or recovering an existing logical Romanian PID to a new Wallet Unit during its administrative validity period (RO_PID_13), without requiring the creation of a new logical identity record.
+
+Migration or recovery of a logical PID SHALL be performed via one of the following mechanisms:
+
+1. **Device-to-device migration (Proximity transfer):** Where the User possesses their active previous Wallet Unit, that unit SHALL generate a migration authorization cryptographically signed by its WSCD key. Upon receipt and validation of the migration authorization and the new Wallet Unit's Key Attestation, DGEP SHALL revoke all outstanding technical PIDs associated with the previous unit and issue fresh technical PIDs to the new unit.
+2. **Remote recovery via electronic identification document:** A User possessing a CEI or an ICAO Doc 9303 compliant Romanian biometric e-Passport MAY initiate recovery by completing a contactless chip verification on the new device, establishing document possession against RNEP and the national CSCA trust root.
+3. **In-person counter re-binding:** A User who has lost their previous device and does not possess an electronic document MAY re-bind their existing logical PID at an MoIA counter through in-person verification and scanning the short-lived activation QR codes.
+
 ### 5.2 to 5.4 — Technical PID lifecycle, presentation, and restrictions on requesting attributes
 
 *To be established — under analysis.*
