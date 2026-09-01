@@ -839,19 +839,30 @@ Users, DGEP, and Relying Parties do this in compliance with all applicable requi
 
 ### 5.1 Enrolment and issuance
 
-**RO_PID_31** — DGEP SHALL issue a logical Romanian PID only after identity proofing and verification meeting the requirements for assurance level **high** set out in [CIR 2015/1502]. Enrolment SHALL follow the process below, which combines an electronic step performed by the User remotely with an in-person confirmation. It is a **single channel**: neither part alone is sufficient.
+**RO_PID_31** — DGEP SHALL issue a logical Romanian PID only after identity proofing and verification meeting the requirements for assurance level **high** set out in [CIR 2015/1502]. Enrolment SHALL follow one of the approved channels below:
+
+#### Channel A: In-person enrolment at an MoIA counter (available to all citizens holding a valid CI model 1997, CIS, CEI, or Romanian Passport)
+
+| # | Step |
+|---|---|
+| 1 | The User installs RO Wallet and starts an enrolment request from it. The Wallet Unit generates a key pair in its WSCD and displays a ready-to-enrol status. |
+| 2 | The User presents themselves in person at an MoIA / SPCLEP counter and presents a valid Romanian identity document (CI model 1997, CIS, CEI, or Romanian Passport). |
+| 3 | A member of staff verifies the presented physical document, opens the registration function, and enters the User's CNP / document series. |
+| 4 | The system displays an initial registration QR code. |
+| 5 | The User scans that QR code with RO Wallet. This SHALL establish that the Wallet Unit completing the enrolment is the Wallet Unit that initiated the request. |
+| 6 | The system retrieves the record of the User from RNEP, including the facial image, and displays it to the member of staff, who compares it against the User and against the identity document presented. The member of staff confirms the identity only where all three agree. |
+| 7 | On confirmation the system generates a second, **short-lived** QR code, refreshed at intervals of a few seconds and valid for no more than one minute. |
+| 8 | The User scans that second QR code with RO Wallet. This SHALL again establish that the Wallet Unit is the one present at the counter, and SHALL constitute the User's authorisation to proceed. |
+| 9 | RO Wallet transmits its issuance request along with key attestation, and DGEP issues the logical Romanian PID. |
+
+#### Channel B: Hybrid contactless and in-person enrolment (for holders of CEI or ICAO Doc 9303 compliant Romanian e-Passports)
 
 | # | Step |
 |---|---|
 | 1 | The User installs RO Wallet and starts an enrolment request from it. |
-| 2 | The User presents their CEI to the device over its contactless interface. RO Wallet reads the card and requests the authentication PIN of that CEI, which the User enters. |
-| 3 | RO Wallet transmits the resulting proof that the User possesses and controls the CEI to DGEP. Where DGEP accepts it, DGEP SHALL record a **pending enrolment** and RO Wallet SHALL inform the User that the enrolment is to be completed in person at an MoIA counter. |
-| 4 | At the counter, a member of staff compares the User against the CEI they present, and opens the registration function, which displays a QR code. |
-| 5 | The User scans that QR code with RO Wallet. This SHALL establish that the Wallet Unit completing the enrolment is the Wallet Unit that began it at step 1. |
-| 6 | The system retrieves the record of the User from RNEP, including the facial image, and displays it to the member of staff, who compares it against the User and against the CEI presented. The member of staff confirms the identity only where all three agree. |
-| 7 | On confirmation the system generates a second, **short-lived** QR code, refreshed at intervals of a few seconds and valid for no more than one minute. |
-| 8 | The User scans that second QR code with RO Wallet. This SHALL again establish that the Wallet Unit is the one that began the enrolment, and SHALL constitute the User's authorisation to proceed. |
-| 9 | RO Wallet requests issuance, and DGEP issues the logical Romanian PID. |
+| 2 | The User presents their CEI or Romanian biometric e-Passport to the device over its contactless interface. RO Wallet reads the chip (authenticating via CEI PIN or Passport PACE/BAC) and verifies the Document Security Object (SOD) against the national trust root. |
+| 3 | RO Wallet transmits the resulting proof that the User possesses and controls the electronic token to DGEP. Where DGEP accepts it, DGEP SHALL record a **pending enrolment** and RO Wallet SHALL inform the User that the enrolment is to be completed in person at an MoIA counter. |
+| 4 | Steps 4 to 9 of Channel A are completed at an MoIA counter to finalize physical identity confirmation and device binding. |
 
 DGEP SHALL NOT issue a Romanian PID on the basis of a self-asserted identity, or of a document that is expired or reported lost or stolen. DGEP SHALL NOT complete an enrolment in which the identity confirmation at step 6 was not performed.
 
@@ -861,9 +872,9 @@ DGEP SHALL NOT issue a Romanian PID on the basis of a self-asserted identity, or
 
 *Transposes requirements ISSU_19a and ISSU_20 in Topic 10 in Annex 2 of the ARF. ISSU_20 is a policy requirement rather than a technical one, and the ARF contemplates publication on the PID Provider's website.*
 
-*The two scans at steps 5 and 8 are what bind the PID to the device: the first establishes that the Wallet Unit at the counter is the one that read the CEI, and the second that the User authorised issuance from it while present. Without them the in-person confirmation would establish who the User is but not which device receives the attestation.*
+*The two scans at steps 5 and 8 are what bind the PID to the device: the first establishes that the Wallet Unit at the counter is the one associated with the enrolment session, and the second that the User authorised issuance from it while present. Without them the in-person confirmation would establish who the User is but not which device receives the attestation.*
 
-*The electronic step at steps 2 and 3 establishes that the User possesses the CEI and controls its authentication PIN. It is not relied on as an electronic identification means, and nothing in this provision turns on whether any national scheme has been notified at a given level: the identity proofing on which the level of assurance in RO_PID_02 rests is the comparison of the User against the CEI and against the RNEP record, performed in person at step 6.*
+*Under [CIR 2015/1502] Section 2.1.2, in-person verification by an authorized officer against official population records (RNEP) directly satisfies the identity proofing requirements for assurance level high. Channel A ensures full demographic inclusion for all citizens holding valid national identity documents, while Channel B allows prior cryptographic token verification for holders of electronic documents.*
 
 *[CIR 2015/1502] is the instrument that defines assurance levels for electronic identification means. The note to WIAM_14b in Topic 40 in Annex 2 of the ARF records that the term 'level of assurance', as used in the European Digital Identity Regulation and in [CIR 2015/1502], applies in the EUDI Wallet context to the PID.*
 
