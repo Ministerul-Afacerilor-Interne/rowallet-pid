@@ -1,0 +1,33 @@
+name: CD - Package & Publish Specification Artifacts
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  package-and-publish:
+    name: Build Spec Bundle & Attach Artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Specification Bundle
+        run: |
+          mkdir -p dist/
+          tar -czvf dist/ro-pid-specifications-${{ github.ref_name }}.tar.gz \
+            README.md \
+            RO_PID.md \
+            RO_PID_Data_Model.md \
+            Rationale.md \
+            LICENSE
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/ro-pid-specifications-${{ github.ref_name }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

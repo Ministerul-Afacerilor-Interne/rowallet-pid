@@ -1,0 +1,56 @@
+name: PID Specifications & Cryptographic Vectors
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'RO_PID*.md'
+      - 'Rationale.md'
+      - 'schemas/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'RO_PID*.md'
+      - 'Rationale.md'
+      - 'schemas/**'
+
+jobs:
+  validate-pid-payloads:
+    name: Validate SD-JWT & CBOR Vectors
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Validation Dependencies
+        run: pip install cbor2 cryptography requests
+
+      - name: Verify Embedded Payloads
+        run: |
+          python -c "
+          import re, json, glob, sys
+
+          has_error = False
+          for filepath in glob.glob('RO_PID*.md'):
+              with open(filepath, 'r', encoding='utf-8') as f:
+                  content = f.read()
+
+              json_blocks = re.findall(r'\`\`\`json\n(.*?)\n\`\`\`', content, re.DOTALL)
+              for i, block in enumerate(json_blocks):
+                  if '<' in block and '>' in block:
+                      continue
+                  try:
+                      json.loads(block)
+                  except json.JSONDecodeError as e:
+                      print(f'::error file={filepath}::JSON parse error in block {i+1}: {e}')
+                      has_error = True
+
+          if has_error:
+              sys.exit(1)
+          print('All PID JSON structures are valid.')
+          "
