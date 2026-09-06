@@ -2,13 +2,13 @@ name: PID Specifications & Cryptographic Vectors
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
     paths:
       - 'RO_PID*.md'
       - 'Rationale.md'
       - 'schemas/**'
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
     paths:
       - 'RO_PID*.md'
       - 'Rationale.md'
