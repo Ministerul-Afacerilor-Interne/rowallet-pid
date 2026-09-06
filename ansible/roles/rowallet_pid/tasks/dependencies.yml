@@ -1,0 +1,29 @@
+﻿---
+- name: Verify Python 3 presence
+  ansible.builtin.command: "{{ python_executable }} --version"
+  register: python_version_check
+  changed_when: false
+
+- name: Display detected Python version
+  ansible.builtin.debug:
+    msg: "Using {{ python_version_check.stdout }}"
+
+- name: Install required Python dependencies
+  ansible.builtin.pip:
+    name: "{{ python_packages }}"
+    state: present
+  register: pip_install_result
+  failed_when: false
+
+- name: Check Node.js and npm availability
+  ansible.builtin.command: "{{ npm_executable }} --version"
+  register: npm_check
+  changed_when: false
+  failed_when: false
+
+- name: Install markdownlint-cli2 globally via npm if npm is available
+  ansible.builtin.command: "{{ npm_executable }} install -g markdownlint-cli2"
+  when: npm_check.rc == 0
+  register: npm_install_result
+  changed_when: "'added' in npm_install_result.stdout"
+  failed_when: false

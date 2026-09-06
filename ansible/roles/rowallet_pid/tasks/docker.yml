@@ -1,0 +1,25 @@
+﻿---
+- name: Check Docker availability
+  ansible.builtin.command: "docker --version"
+  register: docker_check
+  changed_when: false
+  failed_when: false
+
+- name: Build rowallet-pid Docker container image
+  ansible.builtin.command:
+    cmd: "docker build -t {{ docker_image_name }} ."
+    chdir: "{{ workspace_dir }}"
+  register: docker_build_output
+  when:
+    - build_docker_image | bool
+    - docker_check.rc == 0
+  changed_when: "'Successfully built' in docker_build_output.stdout or 'naming to docker.io' in docker_build_output.stdout"
+
+- name: Run container validation test
+  ansible.builtin.command:
+    cmd: "docker run --rm -v {{ workspace_dir }}:/workspace -w /workspace {{ docker_image_name }} python3 scripts/validate_vectors.py"
+  register: docker_run_output
+  when:
+    - build_docker_image | bool
+    - docker_check.rc == 0
+  changed_when: false

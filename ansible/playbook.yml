@@ -1,0 +1,9 @@
+﻿---
+- name: Romanian PID (rowallet-pid) Rulebook Automation & Validation Playbook
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - roles/rowallet_pid/vars/main.yml
+
+  roles:
+    - role: rowallet_pid

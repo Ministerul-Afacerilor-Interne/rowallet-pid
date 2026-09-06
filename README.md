@@ -27,6 +27,29 @@ Where a provision of this Rulebook is inconsistent with the EU PID Rulebook, [CI
 
 This Rulebook profiles the **PID Rulebook (ARF Annex 3.01) version 1.7, dated 17 July 2026**, and version **1.5** of the template for Attestation Rulebooks, dated 8 July 2026. It was assessed against the revisions of Annex 2 of the ARF in force on **4 August 2026** for Topic 3, recorded in Annex B, and on **7 August 2026** for Topic 12, recorded in Annex C. RO_PID_61 governs review against later versions of those documents and of the Implementing Regulations this Rulebook depends on.
 
+## Validation and Automation
+
+The repository includes automated checks for specification files, JSON structures, SD-JWT disclosures, and cryptographic test vectors:
+
+### Standalone Validation Script
+
+```bash
+python scripts/validate_vectors.py
+```
+
+### Ansible Playbook
+
+An Ansible automation playbook is available under `ansible/` to automate environment setup, markdown linting, and test vector verification:
+
+```bash
+# Execute local validation and verification
+ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
+
+# Build Docker image and validate in container
+ansible-playbook -i ansible/inventory.ini ansible/playbook.yml -e build_docker_image=true
+```
+
 ## Feedback
 
 `feedback.pidrulebook@mai.gov.ro`
+

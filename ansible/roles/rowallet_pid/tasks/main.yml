@@ -1,0 +1,10 @@
+﻿---
+- name: Include environment & dependency provisioning tasks
+  ansible.builtin.include_tasks: dependencies.yml
+
+- name: Include specification and test vector validation tasks
+  ansible.builtin.include_tasks: validate.yml
+
+- name: Include Docker build and container tasks
+  ansible.builtin.include_tasks: docker.yml
+  when: build_docker_image | bool
