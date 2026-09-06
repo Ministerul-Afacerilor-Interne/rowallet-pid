@@ -3,7 +3,7 @@
 **Companion to `RO_PID.md`, the Romanian PID Rulebook. Accompanies version 0.1 of that document.**
 
 **Author:** Ministerul Afacerilor Interne, Direcția Generală pentru Evidența Persoanelor<br>
-**Version:** 0.1 31 Aug 2026<br>
+**Version:** 0.1 — 31 Aug 2026<br>
 **Feedback:** feedback.pidrulebook@mai.gov.ro<br>
 **Status:** **Not normative.** `RO_PID.md` governs; where this document and the Rulebook differ, the Rulebook prevails and this document is to be corrected. RO_PID_61(d) requires each review of the Rulebook to verify that this document still agrees with its Chapters 2, 3 and 4.
 
@@ -149,8 +149,8 @@ These carry the attestation rather than the User. **[SD-JWT VC] defines which cl
 | `vct` | `urn:eudi:pid:ro:1`. Not disclosable |
 | `iat` | Issuance instant of this technical PID. [SD-JWT VC] leaves this one disclosable at the issuer's option; **RO_PID_26 excepts it**, so it is carried in the clear |
 | `nbf`, `exp` | The technical validity period. Its length is **WITHDRAWN — N12**, Sections 5.2 to 5.4 of the Rulebook being where it will be fixed. RO_PID_14 is in force and requires the technical period to sit inside the administrative one; see the day convention below |
-| `status` | The entry of this technical PID in a revocation mechanism, in the form [Token Status List] specifies. **WITHDRAWN — N13**: RO_PID_56 carried it and Chapter 7 is withdrawn in full |
-| `cnf` | The public key this technical PID is bound to. **WITHDRAWN — N12**: RO_PID_36 carries the device-binding requirement and Sections 5.2 to 5.4 of the Rulebook are withdrawn |
+| `status` | The entry of this technical PID in a revocation mechanism, in the form [Token Status List] specifies. **WITHDRAWN — N13**: RO_PID_56 carried it and Chapter 7 is withdrawn in full. Shown in Section 3 as a non-normative structural mock only |
+| `cnf` | The public key this technical PID is bound to. **WITHDRAWN — N12**: RO_PID_36 carries the device-binding requirement and Sections 5.2 to 5.4 of the Rulebook are withdrawn. Shown in Section 3 as a non-normative structural mock only |
 | `_sd_alg` | The digest algorithm for selective disclosure — `sha-256`. Machinery of [SD-JWT VC] rather than a claim of the attestation, and not disclosable |
 
 ### 2.3 Selective disclosure
@@ -174,6 +174,9 @@ The User in this example was born in Cluj-Napoca on 12 February 1978 and enrolle
 ### 3.1 The attestation as the User sees it
 
 The claim set a Wallet Unit holds after processing every disclosure. This is **not** what is transmitted; DGEP signs Section 3.3 and issues Section 3.5.
+
+> **NON-NORMATIVE PLACEHOLDER NOTICE (`status` and `cnf`):**
+> The technical claims `status` (Token Status List object with `idx: 412703`) and `cnf` (`jwk` EC confirmation key) shown in this example are purely illustrative non-normative mocks. Sections 5.2 to 5.4 (**N12**) and Chapter 7 (**N13**) of the Rulebook—which govern device binding, key confirmation, and revocation lists—are withdrawn pending decision. Implementers building Phase 1 systems MUST NOT treat these structures or values as binding or settled specifications.
 
 ```json
 {
@@ -224,7 +227,7 @@ The claim set a Wallet Unit holds after processing every disclosure. This is **n
 }
 ```
 
-Every URL here is a placeholder and none is an endpoint. The trust anchor URL is not settled (**N9**) and the status list URL will be fixed by Chapter 7 of the Rulebook; the Credential Issuer identifier is not fixed by the Rulebook at all.
+Every URL here is a placeholder and none is an endpoint. The trust anchor URL is not settled (**N9**) and the status list URL will be fixed by Chapter 7 of the Rulebook; the Credential Issuer identifier is not fixed by the Rulebook at all. As noted above, `status` and `cnf` reflect anticipated post-Phase 1 schemas and are not active or mandatory in Phase 1.
 
 ### 3.2 Protected header
 
@@ -323,6 +326,11 @@ The three disclosures whose value is itself a structure — `place_of_birth`, `a
 | `attestation_legal_category` | `aJvJX1d6TN6bbsn2VjsS0g` | `WyJhSnZKWDFkNlRONmJic24yVmpzUzBnIiwgImF0dGVzdGF0aW9uX2xlZ2FsX2NhdGVnb3J5IiwgIlBJRCJd` | `FXhFX4uOT44NNuWwkZ65I-_aKnWyArdq0kGxcINOfTE` |
 
 The `picture` disclosure carries the empty string, which is what the transitional rule in §3.2 of the Rulebook requires. Once the attribute is populated its disclosure carries the whole base64-encoded JPEG in a `data:` URL, and its digest is over the whole of it.
+
+> **IMPLEMENTER WARNING — Strict UTF-8 Encoding for `issuing_authority`:**
+> The value of `issuing_authority` is strictly `Direcția Generală pentru Evidența Persoanelor`, encoded in UTF-8 using Romanian standard comma-below diacritics (`ș` U+0219 `\xc8\x99`, `ț` U+021B `\xc8\x9b`, `ă` U+0103 `\xc4\x83`).
+>
+> If an application or JSON serializer decodes the UTF-8 bytes using legacy Windows-1252 or Latin-1 (ISO-8859-1), it will produce corrupted mojibake (e.g. `DirecÈia GeneralÄ pentru EvidenÈa Persoanelor`). While the base64url disclosure shown in row `issuing_authority` (`WyItLVBh...`) correctly preserves the raw UTF-8 bytes (`44 69 72 65 63 c8 9b 69 61 20 47 65 6e 65 72 61 6c c4 83 20 70 65 6e 74 72 75 20 45 76 69 64 65 6e c8 9b 61 20 50 65 72 73 6f 61 6e 65 6c 6f 72`), implementers MUST ensure that their systems do not ingest or emit corrupted character representations when constructing disclosures or computing the SHA-256 digest (`Ag7ean3tYWvHb8inS4NL5g-MgbkdjfnuKHVWOAiKPyM`).
 
 #### 3.4.1 `place_of_birth` and its members
 
@@ -447,7 +455,7 @@ The parenthesised element is used where the User was not born in a territorial a
 
 **`region` carries the county written in full**, not the two-letter code the register holds. **RNEP does not hold the country of birth as an [ISO 3166-1] alpha-2 code either**, and DGEP derives the code from the country of record. **Where RNEP records no county** — in particular where the User was born outside Romania — `region` is omitted and the whole of the recorded place of birth apart from the country goes into `locality`.
 
-#### 4.1.2 Cryptographic algorithms
+### 4.2 Cryptographic algorithms
 
 RO_PID_55 requires DGEP, RO Wallet and Relying Parties to use only algorithms in the [ECCG Agreed Cryptographic Mechanisms], and fixes these as the minimum for both encodings:
 
@@ -459,7 +467,7 @@ RO_PID_55 requires DGEP, RO Wallet and Relying Parties to use only algorithms in
 
 DGEP may publish further algorithms in a technical profile, each of which must also be in the [ECCG Agreed Cryptographic Mechanisms]. **It may not withdraw an algorithm required above while any technical PID using it remains within its technical validity period.**
 
-### 4.2 Mobile Security Object
+### 4.3 Mobile Security Object
 
 | Element | Carries |
 |---|---|
@@ -586,6 +594,14 @@ The same User, in the CBOR diagnostic notation of [RFC 8949]. This is the exampl
 
 The same logical PID is encoded differently in the two formats.
 
+> **IMPLEMENTER MAPPING ALERT — Cross-Format Identifier Divergences:**
+> Developers and integrators bridging data between [ISO/IEC 18013-5] and [SD-JWT VC] must note several non-trivial naming differences:
+> - **Date of birth:** `birth_date` (mdoc, snake_case) vs. `birthdate` (SD-JWT VC, single word, per [OIDC]).
+> - **Validity timestamps:** `expiry_date` and `issuance_date` (mdoc) vs. `date_of_expiry` and `date_of_issuance` (SD-JWT VC, per [EKYC Schema]).
+> - **Nationality:** `nationality` (mdoc, singular) vs. `nationalities` (SD-JWT VC, plural array, per [EKYC]).
+> - **Portrait:** `portrait` (mdoc) vs. `picture` (SD-JWT VC).
+> Relying parties and wallet converters must NOT assume identical key identifiers across formats.
+
 | | mdoc | SD-JWT VC |
 |---|---|---|
 | Date of birth | `birth_date` | `birthdate` |
@@ -611,6 +627,12 @@ RO_PID_23 fixes the [ISO/IEC 18013-5] encoding and RO_PID_27 the [SD-JWT VC] enc
 
 A request satisfiable in one encoding is not necessarily satisfiable identically in the other. The country of birth may be disclosed alone in a [SD-JWT VC] presentation. It may not in an [ISO/IEC 18013-5] presentation, where `place_of_birth` is presented whole.
 
+### 6.3 Technical verifier guidance for transitional empty portrait
+
+Under the transitional rule of RO_PID_24, the Romanian PID carries an empty byte string (`bstr` of 0 bytes) for `portrait` in mdoc and an empty JSON string (`""`) for `picture` in SD-JWT VC.
+
+Many standard open-source verification libraries and schema validators enforce non-empty constraints (such as valid `data:image/jpeg;base64,...` URI regexes or non-zero byte length constraints) on biometric portrait fields by default, and fail attestation verification if an empty string or 0-length byte string is encountered. Relying Parties operating within RoEUDIW MUST configure their verification engines and schema validators to accept empty values for `portrait` and `picture` without failing verification during this transitional phase.
+
 ---
 
 ## 7 String values and matching
@@ -629,6 +651,8 @@ The letters `Ă`, `Â`, `Î`, `Ș` and `Ț` occur in Romanian names and are carr
 | Machine-readable zone of the same person's card | `IONESTEANU` |
 
 Both are correct. A Relying Party that enrolled a User by scanning their card and later receives a PID holds two different strings for one name, differing in a single character.
+
+> **Diacritic standard and byte-level representation:** All Romanian strings containing diacritics SHALL be encoded in UTF-8 using standard Romanian comma-below characters: 'Ș' (U+0218), 'ș' (U+0219), 'Ț' (U+021A), 'ț' (U+021B), along with 'Ă' (U+0102), 'ă' (U+0103), 'Â' (U+00C2), 'â' (U+00E2), 'Î' (U+00CE), 'î' (U+00EE). Systems MUST NOT convert these to legacy cedilla characters ('ş' U+015F / 'ţ' U+0163) or parse them using Windows-1252 / ISO-8859-1, which causes byte corruption (mojibake) and invalidates cryptographic digest verification.
 
 ---
 
