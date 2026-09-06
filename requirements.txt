@@ -1,0 +1,4 @@
+cbor2
+pyyaml
+requests
+cryptography

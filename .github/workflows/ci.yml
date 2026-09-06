@@ -27,12 +27,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install cbor2 pyyaml requests
+          pip install -r requirements.txt
 
       - name: Lint Markdown Files
         run: |
@@ -40,25 +39,4 @@ jobs:
 
       - name: Validate Embedded JSON & CBOR Test Vectors
         run: |
-          python -c "
-          import re, json, glob, sys
-
-          has_error = False
-          for filepath in glob.glob('*.md'):
-              with open(filepath, 'r', encoding='utf-8') as f:
-                  content = f.read()
-
-              json_blocks = re.findall(r'\`\`\`json\n(.*?)\n\`\`\`', content, re.DOTALL)
-              for idx, block in enumerate(json_blocks):
-                  if '<' in block and '>' in block:
-                      continue
-                  try:
-                      json.loads(block)
-                  except json.JSONDecodeError as err:
-                      print(f'::error file={filepath}::JSON Syntax Error in block {idx+1}: {err}')
-                      has_error = True
-
-          if has_error:
-              sys.exit(1)
-          print('All static JSON payloads are syntactically valid.')
-          "
+          python scripts/validate_vectors.py
