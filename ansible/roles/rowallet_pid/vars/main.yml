@@ -1,0 +1,22 @@
+﻿---
+# Variables for rowallet_pid role
+
+python_executable: "python3"
+npm_executable: "npm"
+
+# Required python packages for PID vector verification
+python_packages:
+  - cbor2
+  - cryptography
+  - pyyaml
+  - requests
+
+# Node / npm tools for markdown linting
+npm_packages:
+  - markdownlint-cli2
+
+# Validation flags
+run_markdownlint: true
+run_vector_validation: true
+build_docker_image: false
+docker_image_name: "rowallet-pid:latest"

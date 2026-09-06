@@ -1,0 +1,38 @@
+﻿---
+- name: Validate embedded JSON structures and cryptographic test vectors
+  ansible.builtin.command:
+    cmd: "{{ python_executable }} scripts/validate_vectors.py"
+    chdir: "{{ workspace_dir }}"
+  register: vector_validation_output
+  changed_when: false
+  when: run_vector_validation | bool
+
+- name: Display test vector validation output
+  ansible.builtin.debug:
+    var: vector_validation_output.stdout_lines
+  when: run_vector_validation | bool
+
+- name: Check if markdownlint-cli2 executable is available
+  ansible.builtin.command: "markdownlint-cli2 --version"
+  register: markdownlint_check
+  changed_when: false
+  failed_when: false
+  when: run_markdownlint | bool
+
+- name: Execute markdownlint across specification files
+  ansible.builtin.command:
+    cmd: "markdownlint-cli2 \"**/*.md\" \"#node_modules\""
+    chdir: "{{ workspace_dir }}"
+  register: markdownlint_output
+  changed_when: false
+  failed_when: false
+  when:
+    - run_markdownlint | bool
+    - markdownlint_check.rc == 0
+
+- name: Display markdownlint results
+  ansible.builtin.debug:
+    var: markdownlint_output.stdout_lines
+  when:
+    - run_markdownlint | bool
+    - markdownlint_check.rc == 0

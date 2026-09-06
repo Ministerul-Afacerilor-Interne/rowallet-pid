@@ -84,6 +84,8 @@ A provision or section marked **UNDER REVIEW** is not settled. It SHALL be read 
 
 **The identifiers of a withdrawn provision are reserved within the current draft.** A cross-reference elsewhere in this Rulebook to a provision whose content is withdrawn is a reference to that provision **as it will be settled**, and is not a defect in the cross-reference. This applies to RO_PID_33 to RO_PID_52, and to RO_PID_56 to RO_PID_60, whose sections are withdrawn in full.
 
+> **Implementer guidance on cross-references to withdrawn sections:** Implementers MUST NOT attempt to conform to or implement features referencing withdrawn provisions (RO_PID_33 to RO_PID_52 in Sections 5.2 to 5.4, and RO_PID_56 to RO_PID_60 in Chapter 7) for Phase 1. Features depending on these provisions—such as online status list revocation checking, batching/replenishment intervals, and automated presentation restriction policies—are deferred to subsequent phases pending final MoIA/DGEP administrative determinations. For Phase 1, attestations operate on static issuance validity and baseline data protection legislation without automated revocation or presentation restriction enforcement.
+
 **This Rulebook cannot presently be notified or assessed as a whole.** Sections 5.2 to 5.4 and Chapter 7 carry no content, and Annexes B and C record which requirements are consequently not transposed. That is the intended state for the present round and not an oversight.
 
 ### 1.4 Terminology
@@ -329,7 +331,7 @@ This section defines the domestic PID attributes of Romania, in accordance with 
 
 | Data Identifier | Definition | National provision |
 |---|---|---|
-| **personal_numeric_code** | The *cod numeric personal* (CNP) assigned to the User under Romanian law. | **SHALL be included.** See RO_PID_19 and the restrictions on requesting it, to be settled in Section 5.4. Example: `1780212123451` |
+| **personal_numeric_code** | The *cod numeric personal* (CNP) assigned to the User under Romanian law. | **SHALL be included.** See RO_PID_19. Restrictions on requesting it are to be settled in Section 5.4 (reserved under N12); in Phase 1 Relying Parties must observe general legal safeguards under [Law 190/2018] and [GDPR]. Example: `1780212123451` |
 | **age_equal_or_over** | A set of assertions, one for each age threshold defined in RO_PID_20, stating whether the User has attained that age. | **SHALL be included.** See RO_PID_20. Thresholds 14, 16, 18 and 65 |
 
 **RO_PID_19** — `personal_numeric_code` SHALL contain the CNP of record in RNEP: exactly thirteen decimal digits, without separators, spaces, or any prefix. The first digit SHALL be in the range 1 to 6.
@@ -418,6 +420,8 @@ Whether each attribute is present is governed by Chapter 2 and is restated in th
 | trust_anchor | `trust_anchor` | `tstr` | SHALL |
 | attestation_legal_category | `attestation_legal_category` | `tstr` | SHALL |
 
+> **Implementer note on attribute identifiers (mdoc vs. SD-JWT VC):** Attention is drawn to the attribute identifiers used in this [ISO/IEC 18013-5] encoding compared to the claim names used in the [SD-JWT VC] encoding (Section 4.1.1 and Section 6 of `RO_PID_Data_Model.md`). Specifically, mdoc uses `birth_date` (with underscore), `expiry_date`, `issuance_date`, and `nationality` (singular), whereas [SD-JWT VC] uses `birthdate` (without underscore, per [OIDC]), `date_of_expiry`, `date_of_issuance`, and `nationalities` (plural, per [EKYC]). Developers must ensure their data structures do not inadvertently conflate or mis-map these identifiers across formats.
+
 #### 3.1.3 Attribute nationality
 
 The attribute `nationality` is encoded as a type `nationalities`, that is, an array of alpha-2 country codes as specified in [ISO 3166-1]. Using CDDL notation as specified in [RFC 8610], the encoding of this attribute is:
@@ -479,6 +483,8 @@ The image must comply with the quality requirements for a full frontal image typ
 
 > **UNDER REVIEW — N6.** [CIR 2024/2977] makes the portrait mandatory only from a future date. The national requirements for the attribute are to be added to this provision before its value is populated.
 
+> **Technical guidance for Verifying Parties on empty portrait handling:** Many general-purpose verification libraries and schema validators for [ISO/IEC 18013-5] and [SD-JWT VC] expect portrait attributes to contain valid image binary data or a non-empty `data:` URL, raising schema or type validation errors if an empty byte string (`bstr`) or empty string (`""`) is encountered. Relying Parties operating within RoEUDIW MUST configure their presentation verification engines to accept 0-length byte strings and empty strings for `portrait` and `picture` during the transitional period without treating them as schema or verification failures.
+
 **RO_PID_25** — DGEP SHALL enable every User to opt out from receiving a `portrait` attribute. Where a User exercises that opt-out, DGEP SHALL include the `portrait` attribute in the Romanian PID as an empty CBOR `bstr` in an [ISO/IEC 18013-5]-compliant PID, and as an empty JSON string in a [SD-JWT VC]-compliant PID. The attribute SHALL be present and empty; it SHALL NOT be omitted. DGEP SHALL NOT withhold any other attribute on the ground that the User has opted out.
 
 **When the election is made, and changing it.** The opt-out is exercised during the issuance of the logical Romanian PID, as PID_03 in Topic 3 in Annex 2 of the ARF provides. A User MAY afterwards ask DGEP to change that election, and DGEP SHALL provide a means of doing so. **A change does not require a new logical Romanian PID**: it takes effect on the technical PIDs issued after it, through the re-issuance process required by Topic 10 in Annex 2 of the ARF, and the administrative validity period of the logical PID — and with it `issuance_date` and `expiry_date` — is unaffected.
@@ -500,7 +506,7 @@ The image must comply with the quality requirements for a full frontal image typ
 
 EXAMPLE: The following shows an [ISO/IEC 18013-5]-compliant Romanian PID, in the CBOR diagnostic notation of [RFC 8949]. It is the same User as the example in Section 4.3 — born in Cluj-Napoca on 12 February 1978, enrolled using an electronic identity card, every attribute value taken from RNEP — so the two examples can be read side by side.
 
-> **UNDER REVIEW — N12, N13.** This example illustrates provisions that are in part withdrawn: its validity, status and binding elements come from Sections 5.2 to 5.4 and Chapter 7. Annex D registers both.
+> **UNDER REVIEW — N12, N13 (NON-NORMATIVE PLACEHOLDER NOTICE).** This example illustrates provisions that are in part withdrawn: its validity, status (`status_list`) and binding elements (`deviceKey` / `cnf`) come from Sections 5.2 to 5.4 and Chapter 7, and are illustrative mock values. Annex D registers both. Implementers must not treat these technical lifecycle and revocation structures as normative or settled for Phase 1.
 
 **String values are reproduced exactly as RNEP holds them, which for the names means upper case**, as RO_PID_05 requires. Two values are not reproduced from RNEP and are not upper case: `place_of_birth`, whose form RO_PID_07 fixes, and `issuing_authority`, whose mixed-case value RO_PID_12 fixes.
 
@@ -678,6 +684,8 @@ The standard JWT claims `nbf` and `exp` express the technical validity period of
 | email_address | `email` | string | Section 5.1 of [OIDC] | SHALL NOT, per RO_PID_09 |
 | mobile_phone_number | `phone_number` | string | Section 5.1 of [OIDC] | SHALL NOT, per RO_PID_09 |
 
+> **Implementer note on claim naming:** Notice that while the generic data identifier in Chapter 2 and the mdoc attribute in Section 3.1.2 use `birth_date` (with an underscore), the [SD-JWT VC] claim name according to Section 5.1 of [OIDC] is `birthdate` (no underscore). Similarly, `date_of_expiry`, `date_of_issuance`, and `nationalities` follow the [EKYC] profile, diverging from mdoc's `expiry_date`, `issuance_date`, and `nationality`. Systems bridging or translating between formats must avoid erroneous attribute substitution.
+
 #### 4.1.2 Private Names specific to the attestation type
 
 | Data Identifier | Claim name | Encoding format | Inclusion |
@@ -754,7 +762,7 @@ Where an attestation scheme for the Romanian PID is registered in the catalogue 
 
 EXAMPLE: The following shows the payload of a Romanian PID in [SD-JWT VC] format before encoding into the SD-JWT format. The User in this example was born in Cluj-Napoca on 12 February 1978 and enrolled using their electronic identity card. Every attribute value shown is taken from RNEP: the CEI is used for onboarding and is not a source of attribute values, as RO_PID_04 provides.
 
-> **UNDER REVIEW — N12, N13.** As with Section 3.3, this example illustrates provisions that are in part withdrawn: its validity, status and binding elements come from Sections 5.2 to 5.4 and Chapter 7. Annex D registers both.
+> **UNDER REVIEW — N12, N13 (NON-NORMATIVE PLACEHOLDER NOTICE).** As with Section 3.3, this example illustrates provisions that are in part withdrawn: its validity, status (`status_list`) and binding elements (`cnf`) come from Sections 5.2 to 5.4 and Chapter 7, and are illustrative mock values. Annex D registers both. Implementers must not treat these technical lifecycle and revocation structures as normative or settled for Phase 1.
 
 **String values are reproduced exactly as RNEP holds them, which for the names means upper case**, as RO_PID_05 requires. Two values are not reproduced from RNEP and are not upper case: `place_of_birth`, whose form RO_PID_07 fixes, and `issuing_authority`, whose mixed-case value RO_PID_12 fixes.
 
@@ -1002,6 +1010,8 @@ Further requirements in this Rulebook comply with or reference the applicable re
 | **[CIR 2025/1569]** | Commission Implementing Regulation (EU) 2025/1569. Article 8 establishes the catalogue of schemes for the attestation of attributes. |
 | **[OUG 97/2005]** | *Ordonanța de urgență a Guvernului* no. 97/2005 on the records, domicile, residence and identity documents of Romanian citizens, republished as amended. Article 6 establishes the CNP. |
 | **[Law 119/1996]** | *Legea* no. 119/1996 on civil status documents, republished as amended. Article 22(1) bears on the assignment of the CNP from birth. |
+| **[Law 190/2018]** | *Legea* no. 190/2018 on measures for implementing Regulation (EU) 2016/679. Article 4 regulates the processing of national identification numbers (CNP). |
+| **[GDPR]** | Regulation (EU) 2016/679 on the protection of natural persons with regard to the processing of personal data (General Data Protection Regulation). Article 87 governs national identification numbers. |
 | **[ARF]** | European Digital Identity Wallet — Architecture and Reference Framework. |
 | **[PID Rulebook]** | PID Rulebook, ARF Annex 3.01, version 1.7, 17 July 2026, maintained in the EUDI Wallet attestation rulebooks catalogue. |
 | **[Rulebook template]** | The template for Attestation Rulebooks, version 1.5, 8 July 2026. Requirement ARB_29 in Topic 12 in Annex 2 of the ARF recommends following its structure and contents; Annex C.2 records how this Rulebook does. |
