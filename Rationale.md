@@ -1,9 +1,9 @@
 # Rationale for the Romanian PID Rulebook
 
-**Companion to `RO_PID.md`, the Romanian PID Rulebook. Accompanies version 0.1 of that document.**
+**Companion to `RO_PID.md`, the Romanian PID Rulebook. Accompanies version 0.2 of that document.**
 
 **Author:** Ministerul Afacerilor Interne, Direcția Generală pentru Evidența Persoanelor<br>
-**Version:** 0.1 — 31 Aug 2026<br>
+**Version:** 0.2 — 15 Oct 2026<br>
 **Feedback:** feedback.pidrulebook@mai.gov.ro<br>
 **References:** the bracketed citations used here are those of the Rulebook; Chapter 9 of `RO_PID.md` is the reference list for all of them.<br>
 **Status:** **Not normative.** It states why the national decisions in `RO_PID.md` were taken and creates no obligation of its own. `RO_PID.md` governs; where this document and the Rulebook differ, the Rulebook prevails and this document is to be corrected.
@@ -44,10 +44,9 @@ withdrawn text said what it said*, and as an input to settling the Annex D entry
 justification for anything currently in force.
 
 **This document follows the Rulebook.** There is a heading below for every provision the Rulebook
-states and for every identifier it reserves, in the order the Rulebook reads, save for three. RO_PID_42 and
-RO_PID_49 were never separately explained. RO_PID_34 has no entry because the duty it once
-carried — issuing to a Wallet Unit of every recognised Wallet Solution — is in force under
-RO_PID_31, and the reasoning for it sits there. There is nothing for an attribute the Romanian PID
+states and for every identifier it reserves against a withdrawn section, in the order the Rulebook
+reads, save for three: RO_PID_34, RO_PID_42 and RO_PID_49 were never separately explained. RO_PID_29
+and RO_PID_32 are reserved and unused, and have no entry. There is nothing for an attribute the Romanian PID
 does not carry; Chapter 2 of the Rulebook records every attribute it declines, and the reason.
 
 **"This Rulebook" below means `RO_PID.md`.** This document is not a Rulebook and states no
@@ -60,15 +59,15 @@ reasoning explains.
 
 *Why a single PID Provider.* DGEP holds RNEP and generates the CNP, so it is the only body in Romania that can attest the values a Romanian PID carries without reading them from somewhere else — which RO_PID_04 forbids. A second PID Provider would necessarily populate its attestations from a copy of the register, and where the two disagreed no Relying Party would have any means of telling which was authoritative. The prohibition on any other entity using the document type, the namespace or the Verifiable Credential Type is what gives those identifiers their meaning: a Relying Party that recognises `eu.europa.ec.eudi.pid.ro.1` knows, from the identifier alone, which authority stands behind the attributes.
 
-*Why at most one logical PID per Wallet Unit.* Two logical PIDs in one Wallet Unit would attest the same person, from the same register, over two administrative validity periods running independently of one another. A correction applied to one would leave the other outstanding and looking correct, and the batch, replenishment and revocation rules would each have to say which of the two they meant. Nothing is gained in exchange: a Wallet Unit already holds many technical PIDs of one logical PID, and that is what makes repeated presentations unlinkable.
+*Why at most one logical PID per Wallet Unit.* Two valid logical PIDs issued to one Wallet Unit would attest the same person, from the same register, over two administrative validity periods running independently of one another. A correction applied to one would leave the other outstanding and looking correct, and the batch, replenishment and revocation rules would each have to say which of the two they meant. Nothing is gained in exchange: a Wallet Unit already holds many technical PIDs of one logical PID, and that is what makes repeated presentations unlinkable.
 
-*Why the converse is left open, and said to be left open.* Whether one User may hold a logical PID in two Wallet Units — the case of a personal and a work device — is a question about the User rather than about the Wallet Unit, and this provision does not answer it. It turns on how identity proofing and revocation reach a second device, which belongs with the enrolment and lifecycle provisions. The Rulebook records the gap expressly rather than leave a reader to infer a prohibition from a rule that does not state one.
+*Why the rule binds DGEP and not the Wallet Unit.* A logical PID is not a data structure but the PID as the User understands it, independent of any encoding. The Wallet Unit receives and holds only technical PIDs, and which logical PID a technical PID corresponds to is settled by DGEP when it issues it, so a duty on the Wallet Unit framed in terms of logical PIDs could be neither followed nor tested. DGEP does know: ISSU_65 already obliges it to verify that a re-issued technical PID goes to the same Wallet Unit as the existing PID, which presupposes that it records which Wallet Unit that is. The rule is therefore a check DGEP makes before issuing, and what the Wallet Unit requests is left to the batch and replenishment rules, which can be stated in terms the Wallet Unit observes.
+
+*Why the converse is left open, and said to be left open.* Whether one logical PID may be issued to two Wallet Units of the same User — the case of a personal and a work device — is a question about the User rather than about the Wallet Unit, and this provision does not answer it. It turns on how identity proofing and revocation reach a second device, which belongs with the enrolment and lifecycle provisions. The Rulebook records the gap expressly rather than leave a reader to infer a prohibition from a rule that does not state one.
 
 ## RO_PID_02 — The Romanian PID SHALL be issued at level of assurance high, as defined in the European Digital…
 
-*Why the level is stated in the Rulebook at all.* It follows from the European Digital Identity Regulation, which requires a Wallet Unit to be provided under an electronic identification scheme notified at level of assurance high; the PID is what carries the identity into that Wallet Unit, and a PID issued at a lower level would be the weakest link in a chain the Regulation requires to be strong throughout. Stating it here is nonetheless what makes RO_PID_31 legible. The enrolment process in that provision — an electronic step, then an in-person comparison of the User against their CEI and against the RNEP record — is not a national preference for ceremony; it is what [CIR 2015/1502] asks for at this level, and a reader who did not know the level would have no way of telling which parts of it are negotiable.
-
-*What the level does not depend on.* It rests on the identity proofing DGEP performs, and not on the notification status of any Romanian scheme. RO_PID_31 records that separately, because the two are easily conflated and the second is outside this Rulebook's control.
+*Why the level is stated in the Rulebook at all.* It follows from the European Digital Identity Regulation, which requires a Wallet Unit to be provided under an electronic identification scheme notified at level of assurance high; the PID is what carries the identity into that Wallet Unit, and a PID issued at a lower level would be the weakest link in a chain the Regulation requires to be strong throughout. Stating it here is nonetheless what makes RO_PID_31 legible. The enrolment process in that provision — the verification of the User's CEI by the eID Server of the MoIA — is there to meet what [CIR 2015/1502] asks for at this level, and a reader who did not know the level would have no way of telling which parts of it are negotiable.
 
 ## RO_PID_03 — DGEP SHALL issue every logical Romanian PID in both the format specified in [ISO/IEC 18013-5] and the…
 
@@ -76,7 +75,7 @@ reasoning explains.
 
 ## RO_PID_04 — RNEP SHALL be the authoritative source for every PID attribute derived from civil-status or population…
 
-*Why RNEP and not the CEI.* Both were candidates. The CEI carries a copy of some of the same values, itself derived from RNEP, and a scheme with no central register has no choice but to read from the card — which is why some Member States do. Romania has a central register, so the choice was real, and it matters because the two are known to **diverge in encoding**: a PID populated from the card would not always carry the same bytes as a PID populated from the register, and neither party to a mismatch would be able to say which was wrong. Reading from RNEP removes the question. The CEI is retained for what it is good at — proving at onboarding that the person in front of the counter is the person in the register — and is not a source of attribute values.
+*Why RNEP and not the CEI.* Both were candidates. The CEI carries a copy of some of the same values, itself derived from RNEP, and a scheme with no central register has no choice but to read from the card — which is why some Member States do. Romania has a central register, so the choice was real, and it matters because the two are known to **diverge in encoding**: a PID populated from the card would not always carry the same bytes as a PID populated from the register, and neither party to a mismatch would be able to say which was wrong. Reading from RNEP removes the question. The CEI is retained for what it is good at — establishing at enrolment who the person enrolling is — and is not a source of attribute values.
 
 *Why no attribute is populated from data asserted by the User.* A PID that attests what its subject told the issuer attests nothing. The rule is stated expressly because the issuance flow passes through the User's device, and an implementer reading only the protocol could reasonably conclude that a value arriving from the Wallet Unit is a value DGEP may sign.
 
@@ -138,14 +137,11 @@ reasoning explains.
 
 The attribute identifies a legal entity; it is not display text. The legal name exists in Romanian, and any English rendering is unofficial. Two parties rendering the same authority into English will not reliably produce the same string, which is exactly the ambiguity a fixed normative value exists to prevent.
 
-*The decisive point is that the multilingual slot already exists elsewhere in the stack.* Issuer and credential metadata are explicitly multilingual by design, whereas the attribute is a single string. Putting a second language in the attribute would be duplicating — badly, in one flat string — what the surrounding metadata does properly, one object per language. Four mechanisms carry the translation, each better suited than the attribute:
+*The decisive point is that the multilingual slot already exists elsewhere in the stack.* Issuer and credential metadata are explicitly multilingual by design, whereas the attribute is a single string. Putting a second language in the attribute would be duplicating — badly, in one flat string — what the surrounding metadata does properly, one object per language. Three mechanisms carry the translation, each better suited than the attribute:
 
-- **Credential Issuer Metadata** under [OpenID4VCI], published by DGEP. Its `display` parameter is an array with one object per language, each carrying a `name` and a `locale`. It is the most directly relevant mechanism, because every Wallet Unit that obtains a Romanian PID reads this metadata in the course of issuance. **No provision in force presently requires DGEP to publish it**, the provision that did being withdrawn with Sections 5.2 to 5.4; the duty to carry at least Romanian and English falls on the Type Metadata under RO_PID_29.
-- **Type Metadata** under [SD-JWT VC], published by DGEP per RO_PID_29, whose `display` array carries per-language entries keyed by `lang`, covering the type and the domestic claims.
+- **Credential Issuer Metadata** under [OpenID4VCI], published by DGEP. Its `display` parameter is an array with one object per language, each carrying a `name` and a `locale`. It is the most directly relevant mechanism, because every Wallet Unit that obtains a Romanian PID reads this metadata in the course of issuance. **No provision in force presently requires DGEP to publish it**, the provision that did being withdrawn with Sections 5.2 to 5.4.
 - **The Trusted List** published under [CIR 2024/2980], which carries the registered name of the PID Provider and supports multilingual name entries. It, not the attestation, is the authoritative record of who DGEP is. That list is the List of Trusted Entities of PID Providers, not a Trusted List; see RO_PID_53.
 - **`issuing_country`**, fixed at `RO`, which already gives machine-readable provenance without any party needing to parse the authority name.
-
-*Two traps for implementers,* both stated in the Rulebook. The language key differs between the first two: [OpenID4VCI] uses `locale`, [SD-JWT VC] Type Metadata uses `lang`. Both take a [BCP 47] language tag, so the values are interchangeable but the member names are not. And because the English name is published in two places, the two could drift — RO_PID_29 requires the English name in the Type Metadata to be identical to the one in the Credential Issuer Metadata, so that a Relying Party does not obtain two different English names for DGEP depending on which document it reads.
 
 ## RO_PID_13 — `expiry_date` SHALL be computed from `issuance_date`.
 
@@ -189,7 +185,7 @@ A fixed four-year term avoids both. Every logical PID has the same administrativ
 
 *Why the set is closed, and closed by amendment.* Requirement PID_06 permits a PID Provider to carry domestic attributes and does not limit how many. The limit is a national one, and it exists because Sections 2.7 and 3.1.5 are the publication PID_07 requires for the domestic namespace, and Sections 2.7 and 4.1.3 the publication PID_16 requires for the domestic type: a domestic attribute issued but not published there would put DGEP out of conformance with the very requirement that authorises domestic attributes. Requiring an amendment makes that impossible by construction — the attribute cannot be issued until the document that publishes it says so.
 
-*Why the cost of adding one is worth paying.* An amendment means a new version of this Rulebook, a new publication in the catalogue of attestation rulebooks under RO_PID_30, and a revised Type Metadata under RO_PID_29. That cost is the point. A domestic attribute is one no Relying Party outside Romania can be expected to interpret, and a domestic set that grew by increments would end in a Romanian PID that only Romanian Relying Parties could read — which is the outcome the EU-wide attribute set exists to prevent.
+*Why the cost of adding one is worth paying.* An amendment means a new version of this Rulebook and a revised publication of the scheme of the domestic namespace and type under RO_PID_30. That cost is the point. A domestic attribute is one no Relying Party outside Romania can be expected to interpret, and a domestic set that grew by increments would end in a Romanian PID that only Romanian Relying Parties could read — which is the outcome the EU-wide attribute set exists to prevent.
 
 *Why these two.* The CNP, because Romania operates no identifier distinct from it and a PID carrying no persistent identifier could not support the processes that need one; the age assertions, because they are the minimising alternative to disclosing `birth_date`, and because age attributes left [PID Rulebook] at its version 1.1 and are therefore available only domestically. RO_PID_19 and RO_PID_20 carry the reasoning for each.
 
@@ -203,7 +199,7 @@ A fixed four-year term avoids both. Every logical PID has the same administrativ
 
 *A CNP is not immutable.* It is reassigned in exceptional circumstances — a material error in the civil-status record, a legal rectification of the date of birth, an official change of gender. The Rulebook does not describe the CNP as permanent for that reason. The machinery that will handle the change is the subject of two reserved provisions: RO_PID_43 will govern the re-issuance of technical PIDs whose values have been superseded, and RO_PID_60 the grounds on which an uncorrectable change causes the logical PID to be revoked.
 
-*What disclosing the CNP entails.* The thirteen digits are structured `S AA LL ZZ JJ NNN C`: a sex-and-century digit, the year, month and day of birth, the county of registration, a sequence number, and a check digit. The CNP is therefore a *speaking* identifier. A Relying Party that obtains it obtains the User's sex, full date of birth, and county of registration as well — three attributes it may not have requested, in circumstances where the presentation interface would show only that a single number was being shared. Naming the attribute for what it is, rather than as a generic administrative reference, is what allows a Relying Party — and particularly one established in another Member State — to recognise what it is asking for. That name is what makes the disclosure visible to the party consenting to it; the request restriction to be settled at RO_PID_50 and the display obligation at RO_PID_47 will reinforce it.
+*What disclosing the CNP entails.* The thirteen digits are structured `S AA LL ZZ JJ NNN C`: a sex-and-century digit, the year, month and day of birth, the county of registration, a sequence number, and a check digit. The CNP is therefore a *speaking* identifier. A Relying Party that obtains it obtains the User's sex, full date of birth, and county of registration as well — three attributes it may not have requested, in circumstances where the presentation interface would show only that a single number was being shared. Naming the attribute for what it is, rather than as a generic administrative reference, is what allows a Relying Party — and particularly one established in another Member State — to recognise what it is asking for. That name is what makes the disclosure visible to the party consenting to it; the recommendation under RO_PID_19 that a Wallet Unit make the consequence of disclosure evident reinforces it, and the request restriction to be settled at RO_PID_50 will.
 
 ## RO_PID_20 — `age_equal_or_over` SHALL assert, for each of the age thresholds 14, 16, 18 and 65, whether the User…
 
@@ -224,8 +220,6 @@ Requirement ARB_02 in Topic 12 in Annex 2 of the ARF obliges the author of an At
 *The identifier of the domestic namespace is not freely chosen. PID_06 requires it to be generated by appending the [ISO 3166-1] alpha-2 country code, separated by a period, to the namespace identifier of PID_05 with the version number excluded, optionally followed by a version number. For Romania that yields `eu.europa.ec.eudi.pid` + `.ro` + `.1`. A reverse-domain identifier under a national domain would satisfy the uniqueness requirement of ARB_06a in Topic 12 but would still breach PID_06, because PID_06 constrains the construction and not merely the uniqueness of the result.*
 
 ## RO_PID_22 — Every domestic attribute SHALL be carried in the `eu.europa.ec.eudi.pid.ro.1` namespace.
-
-*Note on `resident_house_number`.* [PID Rulebook] defines this attribute only as a member of the `address` structure of the [SD-JWT VC] encoding. It has no attribute identifier in the [ISO/IEC 18013-5] encoding, and this Rulebook does not create one, since doing so would require adding an attribute to the `eu.europa.ec.eudi.pid.1` namespace, which is not within the competence of a national Rulebook. The question does not arise for a Romanian PID in either encoding: RO_PID_11 declines `resident_street` and `resident_address` along with every other address attribute, so there is no structure for a house number to sit in.
 
 *Note on `expiry_date` and `issuance_date`.* [PID Rulebook] permits either `tdate` or `full-date` for these two attributes. This Rulebook requires `full-date`. The administrative validity period of a logical PID is administered in whole days; encoding a time of day would imply a precision that does not exist and would introduce a needless timezone-handling difference between the two encodings of this Rulebook, since Section 4.1.2 encodes both as a date.
 
@@ -251,11 +245,11 @@ Requirement ARB_02 in Topic 12 in Annex 2 of the ARF obliges the author of an At
 
 ## RO_PID_25 — DGEP SHALL enable every User to opt out from receiving a `portrait` attribute.
 
-*The encoding of an empty portrait is prescribed by PID_03 in Topic 3 in Annex 2 of the ARF and is not a national choice. Stating it explicitly matters because "empty" admits of at least four implementations — a zero-length `bstr`, an empty string, an empty data URL, and an absent attribute — which would not interoperate. Note also that PID_03 leaves the offering of the opt-out to the discretion of the PID Provider; this provision requires DGEP to offer it to every User, which is stricter and is permitted.*
+*The encoding of an empty portrait is prescribed by PID_03 in Topic 3 in Annex 2 of the ARF and is not a national choice. Stating it explicitly matters because "empty" admits of at least four implementations — a zero-length `bstr`, an empty string, an empty data URL, and an absent attribute — which would not interoperate. Note also that the Annex to [CIR 2024/2977] leaves the opt-out to the Member State, which may provide for it, and requires the value to be empty where the User exercises it. This provision is Romania's exercise of that option, and offers it to every User.*
 
-*Whether a User can change their mind, and what it costs.* They can, and the machinery that carries it already exists. A technical PID is signed and cannot be edited, so any change of election takes effect on the next technical PIDs issued — which is re-issuance, the process Topic 10 in Annex 2 of the ARF already requires DGEP and RO Wallet to support over [OpenID4VCI] (ISSU_63, ISSU_65) and already requires RO Wallet to offer the User a means of starting (ISSU_58). ISSU_62 is written for exactly this case: a technical PID re-issued *because an attribute value changed, including an attribute being added or deleted*. The Wallet Unit stops presenting the superseded technical PIDs and deletes them.
+*Whether a User can change their mind, and what it costs.* They can, and the machinery that carries it already exists. A technical PID is signed and cannot be edited, so any change of election takes effect on the next technical PIDs issued — which is re-issuance, the process Topic 10 in Annex 2 of the ARF already requires DGEP and Wallet Units to support over [OpenID4VCI] (ISSU_63, ISSU_65). ISSU_62 is written for exactly this case: a technical PID re-issued *because an attribute value changed, including an attribute being added or deleted*. The Wallet Unit stops presenting the superseded technical PIDs and deletes them.
 
-*And the outstanding technical PIDs are revoked — but not all of them.* VCR_09 is narrower than it first reads. It bites only where the attestation **is revocable**, only where the value of an attribute of the corresponding **logical** PID changed, and only on a technical PID **still valid for at least 24 hours**; one closer to expiry than that is left to expire. RO_PID_25 states all three limbs rather than the bare duty, because the bare duty would have been read as revoking a whole outstanding batch in every case. The revocability limb is not academic either: whether a Romanian technical PID is revocable at all is Chapter 7's question, and Chapter 7 is withdrawn.
+*And the outstanding technical PIDs are revoked — but not all of them.* VCR_09 is narrower than it first reads. It bites only where the attestation **is revocable**, only where the value of an attribute of the corresponding **logical** PID changed, and only on a technical PID **still valid for at least 24 hours**; one closer to expiry than that is left to expire. RO_PID_25 states the logical-PID limb and the 24-hour limb rather than the bare duty, because the bare duty would have been read as revoking a whole outstanding batch in every case. The revocability limb is not academic either: whether a Romanian technical PID is revocable at all is Chapter 7's question, and Chapter 7 is withdrawn.
 
 *Where the discretion sits, and why it is worth having.* Revocation follows from DGEP **applying** the changed election, not from the User asking. That distinction is the only thing standing between a display preference and a revocation storm: the portrait election is the one attribute value a User can change at will, and a User who toggles it repeatedly would otherwise force a full batch revocation and re-issuance each time — a status-list write per outstanding technical PID, on infrastructure sized for name changes and deaths. RO_PID_25 therefore permits DGEP to apply the change at the next replenishment. Nothing is lost by the delay: throughout it the User holds a PID whose portrait is empty, which is what they had before, and phase 1 carries an empty portrait for every User in any event.
 
@@ -267,7 +261,7 @@ Requirement ARB_02 in Topic 12 in Annex 2 of the ARF obliges the author of an At
 
 ## RO_PID_26 — In a [SD-JWT VC]-compliant Romanian PID, all claims SHALL be individually selectively disclosable…
 
-*The claims [SD-JWT VC] excepts are those whose function is to establish the validity, type, or key binding of the attestation itself rather than to convey an attribute. They are not enumerated in the Rulebook, so that it does not go stale if that list changes. `iat` is excepted by RO_PID_26 itself and not by the specification, which leaves it disclosable at the issuer's option: it dates the technical PID rather than saying anything about the User, so it shares the character of the rest and nothing is gained by hiding it behind a digest that every verifier would resolve.*
+*The claims [SD-JWT VC] excepts are those whose function is to establish the validity, type, or key binding of the attestation itself rather than to convey an attribute. They are not enumerated in the Rulebook, so that it does not go stale if that list changes. `iat` is not among them. Section 4.2 of the Annex to [CIR 2024/2977] admits no exception beyond those [SD-JWT VC] defines, so `iat` is selectively disclosable, although it dates the technical PID rather than saying anything about the User.*
 
 ## RO_PID_27 — The `age_equal_or_over` claim SHALL be a JSON object whose members are the age thresholds defined in…
 
@@ -285,40 +279,26 @@ Requirement ARB_02 in Topic 12 in Annex 2 of the ARF obliges the author of an At
 
 *Why the identifier takes this form.* PID_14 requires every PID type to sit in the `urn:eudi:pid:` namespace, and `urn:eudi:pid:ro:1` carries the [ISO 3166-1] alpha-2 country code in the same position, and to the same effect, as the `.ro` in the domestic namespace of RO_PID_21. The two encodings therefore identify Romania in the same way, which is one fewer thing for an implementer building both to remember.
 
-## RO_PID_29 — DGEP SHALL author and publish Type Metadata for `urn:eudi:pid:ro:1`.
+## RO_PID_30 — DGEP SHALL publish the scheme of the domestic namespace `eu.europa.ec.eudi.pid.ro.1` and of the domestic type…
 
-*The duty falls on DGEP and not on DGCTI. The Type Metadata describes the attestation type — what claims it carries, what each means, how each displays — which is the PID Provider's subject matter and not the Wallet Provider's; and RO_PID_29 requires the English name it carries to match the one in the Credential Issuer Metadata, which DGEP publishes. The same reasoning puts the catalogue entry in RO_PID_30 on DGEP.*
-
-*Requirement ARB_31 in Topic 12 in Annex 2 of the ARF recommends this. It is made mandatory here because RO_PID_26 states the disclosability rule once, in prose, for every claim at once; without the corresponding machine-readable metadata a Wallet Unit implementer has nothing to build against, and the general rule would have to be re-derived by hand for each claim. The two are required to agree, and where they do not, RO_PID_26 governs and the Type Metadata is corrected.*
-
-## RO_PID_30 — DGEP SHALL publish this Rulebook in the catalogue of attestation rulebooks, complying with the…
-
-*The two catalogues are distinct and serve different readers. The catalogue of attestation rulebooks holds this document, which is human-readable; the catalogue of attestation schemes holds a machine-readable description of the same attestation. ARB_33 exists so that a party who finds the scheme can reach the Rulebook that explains it.*
-
-*Requirements PID_07 and PID_16 in Topic 3 require a PID Provider that defines a domestic namespace or a domestic type to publish it — with all attribute or claim identifiers, their definitions, presence and encoding format — in an Attestation Rulebook complying with Topic 12. This Rulebook is that Attestation Rulebook, and Sections 2.7, 3.1.5 and 4.1.3 are that publication; see Chapter 8. Publishing it in the catalogue is what makes it reachable by a Relying Party in another Member State, which is the point of the requirement: without it, such a Relying Party encountering a Romanian PID has no documented means of discovering what the domestic namespace contains.*
+*Sections 4.1 and 4.2 of the Annex to [CIR 2024/2977] require a PID Provider that uses a domestic namespace or a domestic type to publish its scheme in accordance with Article 8 of [CIR 2025/1569], which establishes the catalogue of attestation schemes. That publication is what makes the domestic attributes reachable by a Relying Party in another Member State: without it, such a Relying Party encountering a Romanian PID has no documented means of discovering what the domestic namespace contains. Sections 2.7, 3.1.5 and 4.1.3 of the Rulebook define what the scheme contains.*
 
 ## RO_PID_31 — DGEP SHALL issue a logical Romanian PID only after identity proofing and verification meeting the…
 
-*Why the process is one channel and not two.* Two independent routes are conceivable — enrolment in person at a counter, or remotely with the CEI read over its contactless interface — and neither alone is sufficient. The remote step establishes that the applicant **possesses the CEI and knows its PIN**; the counter step establishes that the **person present is the person the card and the register describe**, which a contactless read cannot do. Assurance level high under [CIR 2015/1502] wants both, and the process combines them rather than offering a choice between them.
+*Why enrolment is remote.* A User who holds a CEI already holds a document DGEP itself issued and can verify. Verifying it in the course of a request made from the device the PID is to be issued to lets the whole enrolment happen in one sitting on one device, without an appointment or a journey, and with no gap between the moment the User is identified and the moment the Wallet Unit receives the attestation.
 
-*What the two scans are for, and why they are not ceremony.* The identity checks at the counter establish who the User is. They do not establish **which device receives the attestation**, and without that a PID could be issued to a Wallet Unit other than the one that began the enrolment — the failure mode activation exists to prevent. The first scan binds the counter session to the Wallet Unit that read the CEI; the second, over a code that lives for less than a minute, records the User's authorisation to issue while they are still present. That is why RO_PID_32 identifies these steps as the activation process rather than adding a separate one.
+*Why the verification is bound to the Wallet Unit that receives the PID.* An identity established in one place and an attestation delivered to another leave a gap an attacker can stand in. Verifying the CEI within the authorization session the requesting Wallet Unit began, and releasing the authorization code to that session alone, closes it: the device on whose request the User was identified is the device that receives the attestation.
 
-*On the assurance level, and what the CEI is doing here.* The Romanian electronic identification scheme is not notified at level of assurance high, and nothing in this Rulebook requires that it be. The electronic step establishes possession of the CEI and knowledge of its PIN; it is evidence of possession, not the use of a notified electronic identification means, and nothing in this Rulebook turns on the notification status of any scheme. The level of assurance in RO_PID_02 rests on the identity proofing — the comparison of the person present against the card and against the RNEP record, at the counter — which is what [CIR 2015/1502] Section 2.1.2 asks for and which does not depend on notification at all. A prohibition on issuing against an electronic identification means below high would describe a route this process does not use, and this Rulebook states none.
+*Why the process names a Wallet Unit, and not RO Wallet.* DGEP issues a Romanian PID to a Wallet Unit of a Wallet Solution it accepts, and Romania publishes the list of those Wallet Solutions so that a prospective User can find it. Section 1.5.2 of the Rulebook applies every provision addressed to a Wallet Provider or a Wallet Unit to every Wallet Solution certified at national level under the Romanian certification scheme for the European Digital Identity Wallet, and not to RO Wallet alone. The process therefore names a Wallet Unit, not a particular application, and RO Wallet follows it on the same terms as any other.
 
-*Why the second code is short-lived.* A QR code that stayed valid would be a bearer token for issuing a PID: photographed at the counter, it could be scanned later by another device. Refreshing it every few seconds and expiring it inside a minute makes the authorisation useless the moment the User leaves.
+*Why two requirements of Topic 10 are stated in this Section.* ISSU_21 and ISSU_19 are stated with the enrolment because the verification they require precedes every issuance: without it, DGEP has no basis for saying that the Wallet Unit is genuine, and ISSU_19 is what gives that verification a trust anchor to work from. Stating the duty here, and leaving the manner of verification to the issuance protocol to be settled in Sections 5.2 to 5.4, keeps the two questions apart: what DGEP must establish before issuing is a matter for the enrolment, how it establishes it is a matter for the protocol.
 
-*Why the duty reaches every recognised Wallet Solution, and not only RO Wallet.* This is the paragraph of the provision with the widest practical reach. RO Wallet is the Wallet Solution provided by the Ministry, and the rest of this Rulebook is written with it in view, but nothing in the European Digital Identity Regulation confines a Romanian PID to it: a Wallet Unit of any Wallet Solution recognised under the notified scheme is entitled to one, and DGEP publishes the list of those it accepts so that a prospective User can find it. Any condition DGEP applies at issuance is a condition about trust and revocation status, not about the identity of the Wallet Provider, and none of it is to be read as a preference for RO Wallet.
+*Why no separate artefact records the User's authorisation.* The verification of the CEI is the authentication of the End-User that the authorization code flow of [OpenID4VCI] performs at the Authorization Endpoint, and the authorization code is the protocol's own instrument for carrying the result of that authentication to the Wallet Unit. It is released only on a successful verification, is short-lived and single-use, and is bound to the session that requested it. A national artefact serving the same purpose would restate the protocol and would have to be secured again from first principles.
 
-*Whether the process had to be in the Rulebook at all.* It did not. No requirement of Topic 3, Topic 12 or the Attestation Rulebook template asks a Rulebook to describe enrolment, and ISSU_05 binds the Wallet Unit to support activation rather than this document to specify it. It is here because a phase 1 draft that said nothing about how a citizen obtains a PID would be a draft nobody could evaluate, and because the process is a single combined channel — an unusual enough shape that leaving it unwritten invites it to be remembered as the two independent ones it replaced.
-
-## RO_PID_32 — RO Wallet SHALL support a process to activate a newly issued Romanian PID, in accordance with the…
-
-*Why activation is not a separate ceremony.* ISSU_05 requires a Wallet Unit to support a process to activate a newly issued PID in accordance with [CIR 2015/1502] Section 2.2.2, and that Section states an outcome — the attestation reaches the Wallet Unit and the secure device of the person who is its subject — rather than a procedure. Romania had to choose one. The choice made is to identify activation with steps 5 to 9 of RO_PID_31 rather than to add a step after issuance.
-
-*Why that is the better answer.* An activation performed after issuance has to re-establish something already established minutes earlier at the counter, and every re-establishment is another chance to get it wrong. The two scans already prove that the device completing the enrolment is the device that started it and that the User authorised issuance from it in person. Adding a further step would satisfy the wording of ISSU_05 while delivering nothing the process had not already delivered, which is the no-op the requirement exists to prevent rather than to produce.
+*Why activation is not provided for here.* Requirement ISSU_05 requires a Wallet Unit to support a process to activate a newly issued PID, in accordance with Section 2.2.2 of [CIR 2015/1502], and is addressed to the Wallet Unit. Like ISSU_58, it binds Wallet Units directly, and restating it nationally would add nothing and would risk stating it differently. Its identifier, RO_PID_32, is reserved rather than reassigned, so that the identifiers after it are unchanged.
 
 **The entries below explain provisions that carry no content.** Their identifiers are reserved in
-version 0.1 and the text they once explained is held by DGEP. They are kept because the argument for a
+version 0.2 and the text they once explained is held by DGEP. They are kept because the argument for a
 deferred design is the thing most easily lost between a decision being put off and the same decision
 being taken later by different people. **None of them states a requirement**, and an implementer
 building to any figure or rule mentioned in them is building to something the Rulebook does not say.
@@ -332,7 +312,7 @@ building to any figure or rule mentioned in them is building to something the Ru
 
 ## RO_PID_33 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_33 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the issuance protocol.
+> **Not settled.** RO_PID_33 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the issuance protocol.
 
 *This is where the multilingual name of the PID Provider belongs. The `display` array of the Credential Issuer Metadata holds one object per language, so it can carry the authority name in as many languages as are useful, whereas the `issuing_authority` attribute is a single string and can carry only one. RO_PID_12 keeps the attribute in Romanian for that reason; this provision is what makes an English name available to a Wallet Unit or Relying Party that needs one.*
 
@@ -348,19 +328,19 @@ building to any figure or rule mentioned in them is building to something the Ru
 
 ## RO_PID_35 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_35 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the Wallet Provider's duty to make RO Wallet capable of requesting issuance.
+> **Not settled.** RO_PID_35 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the Wallet Provider's duty to make RO Wallet capable of requesting issuance.
 
 *This transposes requirements ISSU_23a and ISSU_23b. It is stated for completeness of the Wallet Provider's obligations under this Rulebook; DGEP is at present the sole PID Provider of the Romanian PID under RO_PID_01.*
 
 ## RO_PID_36 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_36 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns device binding and the keys a technical PID is bound to.
+> **Not settled.** RO_PID_36 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns device binding and the keys a technical PID is bound to.
 
 *These three limbs transpose requirements WUA_09a, WUA_12 and WUA_34 in Topic 9 in Annex 2 of the ARF. They are not a restatement of one another. Binding to a key the Key Attestation does not attest would leave the device unproven; proof of possession of the single key being bound would leave the remaining attested keys unaccounted for, which is what WUA_12 closes for a batch issued under RO_PID_39; and neither establishes, without WUA_34, that the attested keys are held where the Key Attestation says they are.*
 
 ## RO_PID_37 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_37 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns whether the attestation is device-bound.
+> **Not settled.** RO_PID_37 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns whether the attestation is device-bound.
 
 *Requirement ARB_34 in Topic 12 in Annex 2 of the ARF obliges an Attestation Rulebook to state whether its attestation is device-bound. The answer here is not in doubt — device binding is called 'mdoc authentication' in [ISO/IEC 18013-5] and 'key binding' in [SD-JWT VC], requirement ISSU_17 makes it mandatory for every PID, and RO_PID_36 already requires it — but ARB_34 asks for the statement and not for the inference.*
 
@@ -368,7 +348,7 @@ building to any figure or rule mentioned in them is building to something the Ru
 
 ## RO_PID_38 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_38 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the length of the technical validity period.
+> **Not settled.** RO_PID_38 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the length of the technical validity period.
 
 *On the age constraint.* `age_equal_or_over` is the only attribute of a Romanian PID whose value changes on a date DGEP can compute exactly and in advance, and it changes for every User who reaches 14, 16, 18 or 65 — the four thresholds RO_PID_20 fixes, and the only four, since it forbids an assertion at any other. Without this constraint, a technical PID issued shortly before such a birthday would continue to assert that the User had **not** attained the threshold for as long as two months after they had, and RO_PID_43 would oblige DGEP to revoke it — turning every threshold birthday in the country into a revocation event. Truncating the technical validity period so that it ends before the birthday means the situation cannot arise: the assertions in a technical PID are true for the whole of its technical validity period, by construction. The cost is that a User approaching a threshold receives shorter-lived technical PIDs for a time, which RO_PID_42 replenishes automatically and the User does not see.
 
@@ -378,13 +358,13 @@ building to any figure or rule mentioned in them is building to something the Ru
 
 ## RO_PID_39 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_39 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns batch issuance and the size of a batch.
+> **Not settled.** RO_PID_39 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns batch issuance and the size of a batch.
 
 *The two requirements in the first paragraph are not in tension, and requirement ISSU_11a obliges a Wallet Unit to verify the first of them. "Distinct" here means distinct as an attestation — a different key pair, different salts, different attribute digests and a different issuer signature — and not distinct in content. Two technical PIDs of the same batch attest exactly the same facts about the same User; what must differ is everything by which a Relying Party could recognise one presentation as involving the same attestation as another. RO_PID_41 states which elements those are.*
 
 ## RO_PID_40 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_40 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns replenishment when a Wallet Unit runs out.
+> **Not settled.** RO_PID_40 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns replenishment when a Wallet Unit runs out.
 
 *Batching with single use is what denies Relying Parties a correlator. If a Wallet Unit presented one attestation repeatedly, colluding Relying Parties could correlate those presentations by the attestation itself, regardless of which attributes the User disclosed. A fresh attestation with a fresh key for each presentation removes that correlator.*
 
@@ -394,7 +374,7 @@ building to any figure or rule mentioned in them is building to something the Ru
 
 ## RO_PID_41 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_41 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the uniqueness of per-attestation elements.
+> **Not settled.** RO_PID_41 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the uniqueness of per-attestation elements.
 
 *Why the third paragraph is not satisfied by the second.* The elements listed above are values DGEP chooses and can therefore make unique. A timestamp is not chosen — it is observed — and the natural implementation, stamping every technical PID in a batch with the instant the batch was assembled, produces a value that is identical across the batch and almost certainly unique to it. That is a batch identifier in all but name. Note the interaction with RO_PID_38 and RO_PID_39: the technical *validity period* must be identical across a batch, so what this paragraph constrains is the issuance instant and any other timestamp, not the validity dates.
 
@@ -404,7 +384,7 @@ building to any figure or rule mentioned in them is building to something the Ru
 
 ## RO_PID_43 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_43 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns when attribute values must be valid.
+> **Not settled.** RO_PID_43 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns when attribute values must be valid.
 
 *Correctness at issuance does not by itself bound staleness.* A technical PID issued the day before a change of surname is recorded in RNEP carries the superseded name for the remainder of its two months, and nothing about the moment of issuance removes it from circulation. Bounding staleness therefore requires DGEP to detect the change in RNEP and act on it, which is what the second clause of this provision and Chapter 7 exist to do.
 
@@ -422,7 +402,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_44 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_44 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the issuance method and the publication of the batch size.
+> **Not settled.** RO_PID_44 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the issuance method and the publication of the batch size.
 
 *This provision transposes requirements ISSU_39, ISSU_39a, ISSU_40 and ISSU_40a, and the second sentence of ISSU_45. Method A is what RO_PID_39 already describes; naming it, and publishing it where a Wallet Unit can read it, is what the ARF requires in addition. The batch size and the lower limit are published rather than fixed in this Rulebook because they are operational parameters that DGEP must be able to adjust without an amendment; RO_PID_39 is where the floor of 5 sat, beneath which the published size could not fall.*
 
@@ -430,7 +410,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_45 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_45 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns re-issuance and how it differs from replenishment.
+> **Not settled.** RO_PID_45 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns re-issuance and how it differs from replenishment.
 
 *This provision transposes requirements ISSU_58, ISSU_65, ISSU_59, ISSU_62 and ISSU_60 in Topic 10 in Annex 2 of the ARF, in that order.*
 
@@ -440,7 +420,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_46 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_46 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns deletion of a Romanian PID from a Wallet Unit.
+> **Not settled.** RO_PID_46 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns deletion of a Romanian PID from a Wallet Unit.
 
 *The rules of this provision transpose requirements PAD_01, PAD_02, PAD_03, PAD_04 and PAD_05 in Topic 51 in Annex 2 of the ARF. The second matters more here than it would elsewhere: because RO_PID_39 puts a batch rather than a single attestation into the Wallet Unit, deleting "the PID" is ambiguous unless the Rulebook says which, and a deletion that left unused technical PIDs behind would leave presentable attestations in a Wallet Unit the User believes no longer holds any.*
 
@@ -450,13 +430,13 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_47 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_47 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns what a Wallet Unit may present.
+> **Not settled.** RO_PID_47 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns what a Wallet Unit may present.
 
 *These two paragraphs transpose requirements RPA_08 and RPA_07c in Topic 6 in Annex 2 of the ARF. The second is the only point at which the ARF imposes a SHALL on what a Wallet Unit must show a User about a particular PID attribute, and the Romanian PID carries the attribute it concerns. It sits alongside, and is stricter than, the recommendation in RO_PID_19 about the CNP: a portrait is biometric data within the meaning of Union data protection law, and RO_PID_52 governs what the Relying Party may do with it once obtained.*
 
 ## RO_PID_48 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_48 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns proximity presentation and the prohibition on server retrieval.
+> **Not settled.** RO_PID_48 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns proximity presentation and the prohibition on server retrieval.
 
 *The first paragraph transposes requirements ProxId_01, ProxId_01a and ProxId_05 in Topic 24 in Annex 2 of the ARF, and the second transposes ProxId_02, which is addressed to PID Providers by name.*
 
@@ -466,7 +446,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_50 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_50 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns when the national identification number may be requested.
+> **Not settled.** RO_PID_50 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns when the national identification number may be requested.
 
 *What this provision does.* It states the condition on which a Relying Party may request the national identification number. RPRC_21, which warns a User where a request exceeds the attributes a Relying Party registered, operates on the registered attribute set and is not the route by which this provision takes effect; the condition here is one a Relying Party applies to itself, and the general law applies to it independently.
 
@@ -476,7 +456,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_51 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_51 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns requesting an identifier a Relying Party does not need.
+> **Not settled.** RO_PID_51 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns requesting an identifier a Relying Party does not need.
 
 *The CNP is a stable, lifetime-unique value, which is what makes it attractive as a database key and what makes it dangerous as one. Two Relying Parties that each hold it can join their records on it exactly, and neither needs the other's cooperation to do so. Since RO_PID_15 leaves the Romanian PID with no other persistent identifier, the ordinary pressure on a Relying Party is to request the CNP for purposes an opaque number would serve. RO_PID_50 and this provision exist to resist that pressure: the absence of a low-disclosure identifier is a reason to request no identifier, not a reason to request the high-disclosure one.*
 
@@ -494,7 +474,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_52 — reasoning retained for a reserved provision (Annex D, N12)
 
-> **Not settled.** RO_PID_52 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns retention of the portrait by a Relying Party.
+> **Not settled.** RO_PID_52 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns retention of the portrait by a Relying Party.
 
 *This provision transposes requirement PID_03a in Topic 3 in Annex 2 of the ARF. It is the only provision of this Rulebook that governs what a Relying Party does with an attribute after obtaining it, rather than whether it may request it. It is placed here because both questions are settled at the point of a presentation request, and because a Relying Party reading only the restrictions on requesting would otherwise never encounter it.*
 
@@ -530,7 +510,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_56 — reasoning retained for a reserved provision (Annex D, N13)
 
-> **Not settled.** RO_PID_56 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns publication of revocation status.
+> **Not settled.** RO_PID_56 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns publication of revocation status.
 
 *The two encodings do not share a revocation mechanism, and an implementation that publishes only one is not conformant for the other. VCR_11 governs [ISO/IEC 18013-5]-compliant PIDs and routes them to the CBOR mechanism carried in Annex 2 of [CIR 2024/2979], the text of which is taken from the forthcoming second edition of [ISO/IEC 18013-5]. VCR_11a governs [SD-JWT VC]-compliant PIDs and routes them to [Token Status List]. Because RO_PID_03 requires every logical Romanian PID to be issued in both formats, DGEP operates two status list services and not one.*
 
@@ -540,7 +520,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_57 — reasoning retained for a reserved provision (Annex D, N13)
 
-> **Not settled.** RO_PID_57 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the operation of the status lists.
+> **Not settled.** RO_PID_57 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the operation of the status lists.
 
 *The first is the most consequential.* RO_PID_15 declines to issue `document_number` on the ground that a constant value presented alongside rotating technical PIDs would defeat the rotation. A status-list index is exactly such a value — it is carried in the technical PID, it is disclosed to every Relying Party that receives it, and if indices were assigned sequentially as PIDs were issued then two indices from one batch would be adjacent, and adjacency would identify the User as surely as a document number. Randomising the index is what prevents the revocation mechanism from reintroducing, in Chapter 7, precisely the correlator Chapter 2 refuses to create.
 
@@ -552,7 +532,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_58 — reasoning retained for a reserved provision (Annex D, N13)
 
-> **Not settled.** RO_PID_58 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the cascade from a revoked logical PID.
+> **Not settled.** RO_PID_58 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the cascade from a revoked logical PID.
 
 *Revoking only the logical PID would leave outstanding technical PIDs valid for up to two months after the ground for revocation arose, which for grounds such as the death of the User or the compromise of a Wallet Unit is the period during which revocation matters most. The technical validity period places no useful bound on that exposure. The cascade is the only mechanism that removes an outstanding technical PID from circulation.*
 
@@ -560,7 +540,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_59 — reasoning retained for a reserved provision (Annex D, N13)
 
-> **Not settled.** RO_PID_59 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns revocation checking by Relying Parties.
+> **Not settled.** RO_PID_59 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns revocation checking by Relying Parties.
 
 *Republishing on a fixed schedule regardless of change keeps the publication interval from disclosing whether a revocation has occurred, and gives Relying Parties a predictable freshness bound.*
 
@@ -572,7 +552,7 @@ Second, **the number of technical PIDs outstanding at any moment is large**, and
 
 ## RO_PID_60 — reasoning retained for a reserved provision (Annex D, N13)
 
-> **Not settled.** RO_PID_60 carries no content in version 0.1 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the grounds on which DGEP revokes.
+> **Not settled.** RO_PID_60 carries no content in version 0.2 of the Rulebook and its identifier is reserved. Nothing below is a requirement, and it concerns the grounds on which DGEP revokes.
 
 *Why the Wallet Instance and device ground is drafted as a duty and not only as a ground.* Every other ground in the table is an event that reaches DGEP: a death or a change of citizenship is recorded in RNEP, a lost Wallet Unit is reported, a User asks. This one is not. The revocation of a Wallet Instance or of a Wallet Secure Cryptographic Device happens at the Wallet Provider, and nothing carries it to DGEP; the revocation references in the Wallet Instance Attestation and the Key Attestation are the means by which DGEP can find out, and they only work if somebody looks. A ground that nobody is obliged to look for is not a control, which is why WURevocation_18 and WUA_29 are both drafted as a continuing verification duty rather than as a trigger, and why this provision follows them.
 

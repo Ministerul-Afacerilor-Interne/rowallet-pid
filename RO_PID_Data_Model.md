@@ -1,11 +1,11 @@
 # Romanian PID — Data Model
 
-**Companion to `RO_PID.md`, the Romanian PID Rulebook. Accompanies version 0.1 of that document.**
+**Companion to `RO_PID.md`, the Romanian PID Rulebook. Accompanies version 0.2 of that document.**
 
 **Author:** Ministerul Afacerilor Interne, Direcția Generală pentru Evidența Persoanelor<br>
-**Version:** 0.1 31 Aug 2026<br>
+**Version:** 0.2 — 15 Oct 2026<br>
 **Feedback:** feedback.pidrulebook@mai.gov.ro<br>
-**Status:** **Not normative.** `RO_PID.md` governs; where this document and the Rulebook differ, the Rulebook prevails and this document is to be corrected. RO_PID_61(d) requires each review of the Rulebook to verify that this document still agrees with its Chapters 2, 3 and 4.
+**Status:** **Not normative.** `RO_PID.md` governs; where this document and the Rulebook differ, the Rulebook prevails and this document is to be corrected. RO_PID_61(d) requires each review of the Rulebook to verify that this document still agrees with every provision it restates.
 
 ---
 
@@ -15,7 +15,7 @@ This document states the data model of the Romanian Person Identification Data a
 
 Every requirement stated here is taken from `RO_PID.md`, the Romanian PID Rulebook, and each table cites the provision it derives from. **`RO_PID.md` governs. Where this document and the Rulebook differ, the Rulebook prevails and this document is to be corrected.**
 
-**Part of the Rulebook is withdrawn pending decision, and this document says where.** Six provisions and sections of `RO_PID.md` are marked **UNDER REVIEW** and registered in its Annex D. **Three of the six are withdrawn in full** — **Sections 5.2 to 5.4 of the Rulebook**, **Chapter 7 (revocation)** and Annex A — and in a fourth, N9, a single value is withdrawn from a provision that otherwise remains in force. Twenty-five of its identifiers carry no content. Section 5.1, the enrolment and issuance of a Romanian PID, is in force.
+**Part of the Rulebook is withdrawn pending decision, and this document says where.** Six provisions and sections of `RO_PID.md` are marked **UNDER REVIEW** and registered in its Annex D. **Three of the six are withdrawn in full** — **Sections 5.2 to 5.4 of the Rulebook**, **Chapter 7 (revocation)** and Annex A — and in a fourth, N9, a single value is withdrawn from a provision that otherwise remains in force. Twenty-five of its identifiers carry no content, and two more, RO_PID_29 and RO_PID_32, are reserved and unused. Section 5.1, the enrolment and issuance of a Romanian PID, is in force.
 
 The Rulebook marks an unsettled matter **UNDER REVIEW — N*n*** in three forms, set out in its Section 1.3: the content is withdrawn; or the rule stands and may change; or a single value inside a provision that remains in force is unsettled. This document uses two markings of its own, which map onto those three:
 
@@ -36,7 +36,7 @@ The examples in Sections 3 and 5 are illustrative, and illustrate a specificatio
 
 A **logical PID** is the person identification data DGEP administers for a User over an administrative validity period measured in years. A **technical PID** is an individual attestation carrying those attributes, issued to a Wallet Unit with its own, much shorter, technical validity period. The length of that period is not settled; Sections 5.2 to 5.4 of the Rulebook will fix it. **WITHDRAWN — N12.**
 
-**RNEP is the authoritative source for every attribute derived from civil-status or population records** (RO_PID_04). DGEP populates no such attribute from another register and none from data the User asserts. The values the Rulebook fixes for itself — `nationality`, `issuing_authority`, `issuing_country`, `attestation_legal_category` and the composition of `place_of_birth` — are not drawn from the register at all; Section 7 lists them. **The CEI — the Romanian electronic identity card — is used for onboarding and is not a source of attribute values**; where a value held on a CEI differs from the value of record in RNEP, RNEP governs and the PID carries the RNEP value.
+**RNEP is the authoritative source for every attribute derived from civil-status or population records** (RO_PID_04). DGEP populates no such attribute from another register and none from data the User asserts. The values the Rulebook fixes for itself — `nationality`, `issuing_authority`, `issuing_country`, `attestation_legal_category` and the composition of `place_of_birth` — are not drawn from the register at all; Section 7 lists them. **The CEI — the Romanian electronic identity card — is used for enrolment, and is not a source of attribute values**; where a value held on a CEI differs from the value of record in RNEP, RNEP governs and the PID carries the RNEP value.
 
 **Including an attribute obliges nobody to ask for it.** A Relying Party is not required to request every mandatory attribute, and a User is allowed to refuse to present one that is requested. "Mandatory" throughout this document describes what DGEP issues, not what is presented.
 
@@ -66,7 +66,7 @@ A **logical PID** is the person identification data DGEP administers for a User 
 
 | Not carried | Declined by |
 |---|---|
-| `resident_address`, `resident_country`, `resident_state`, `resident_city`, `resident_postal_code`, `resident_street`, `resident_house_number` | RO_PID_11 |
+| `resident_address`, `resident_country`, `resident_state`, `resident_city`, `resident_postal_code`, `resident_street` | RO_PID_11 |
 | `family_name_birth`, `given_name_birth`, `sex` | RO_PID_11 |
 | `personal_administrative_number` | RO_PID_10 |
 | `email_address`, `mobile_phone_number` | RO_PID_09 |
@@ -127,11 +127,9 @@ Strings are UTF-8 and carry Romanian diacritics; see Section 7.
 
 **The administrative validity period is four years** (RO_PID_13). `date_of_expiry` is the day before the fourth anniversary of `date_of_issuance`, so the period is exactly four years under the day convention below. It is **not** derived from the expiry of the CEI on which the logical PID was founded, and the administrative validity of a logical Romanian PID is independent of that document.
 
-**How the administrative dates relate to the technical ones (RO_PID_14).** `date_of_issuance` and `date_of_expiry`, and their [ISO/IEC 18013-5] counterparts, carry no time element and none can be encoded. For the purpose of relating them to technical validity, the administrative validity period begins at 00:00:00 on the issuance date and ends at 23:59:59 on the expiry date, **both in the local time of Romania**, converted to UTC wherever a technical field requires an instant. `nbf`/`validFrom` is never earlier than that beginning and `exp`/`validUntil` never later than that end. **DGEP ceases supplying further technical PIDs when the administrative validity period ends**, and **the policy is applied identically to both encodings**, so the administrative dates of the two formats of one logical PID never diverge. Throughout the period DGEP keeps a technical PID with unexpired technical validity available to the Wallet Unit, and RO Wallet requests one; **the division of that duty is UNDER REVIEW — N8**. **A Relying Party determining whether a PID is within its administrative validity period applies that convention and not its own local date** — the two can differ by a day where the Relying Party is in another time zone. The question does not arise for `nbf`, `exp`, `validFrom` and `validUntil`, which carry absolute instants.
+**How the administrative dates relate to the technical ones (RO_PID_14).** `date_of_issuance` and `date_of_expiry`, and their [ISO/IEC 18013-5] counterparts, carry no time element and none can be encoded. For the purpose of relating them to technical validity, the administrative validity period begins at 00:00:00 on the issuance date and ends at 23:59:59 on the expiry date, **both in the local time of Romania**, converted to UTC wherever a technical field requires an instant. `nbf`/`validFrom` is never earlier than that beginning and `exp`/`validUntil` never later than that end. **DGEP ceases supplying further technical PIDs when the administrative validity period ends**, and **the policy is applied identically to both encodings**, so the administrative dates of the two formats of one logical PID never diverge. Throughout the period DGEP keeps a technical PID with unexpired technical validity available to the Wallet Unit, and the Wallet Unit requests one; **the division of that duty is UNDER REVIEW — N8**. **A Relying Party determining whether a PID is within its administrative validity period applies that convention and not its own local date** — the two can differ by a day where the Relying Party is in another time zone. The question does not arise for `nbf`, `exp`, `validFrom` and `validUntil`, which carry absolute instants.
 
-**Where the translated name of the authority lives.** `issuing_authority` is carried in Romanian only, but a translated form is available from three places, each of which accommodates more than one language: the Credential Issuer Metadata DGEP publishes, the Type Metadata published under RO_PID_29, and the List of Trusted Entities of PID Providers compiled from the notification made under [CIR 2024/2980]. A Wallet Unit or Relying Party should render the authority name in the language of its interface using those, and transmits the Romanian value unchanged (RO_PID_12).
-
-**What the Type Metadata carries.** RO_PID_29 requires DGEP to author and publish Type Metadata for `urn:eudi:pid:ro:1`. Its `display` array carries entries for **at least Romanian and English**, identified by the `lang` member, whose value is a [BCP 47] language tag, covering the attestation type itself and the domestic claims of Section 2.1. The English rendering of the name of the PID Provider is identical to the one in the Credential Issuer Metadata. The Type Metadata also carries the Claim Selective Disclosure Metadata for every claim, expressing the rule in RO_PID_26.
+**Where the translated name of the authority lives.** `issuing_authority` is carried in Romanian only, but a translated form is available from two places, each of which accommodates more than one language: the Credential Issuer Metadata DGEP publishes and the List of Trusted Entities of PID Providers compiled from the notification made under [CIR 2024/2980]. A Wallet Unit or Relying Party should render the authority name in the language of its interface using those, and transmits the Romanian value unchanged (RO_PID_12).
 
 **What `trust_anchor` is for.** The URL it carries is a convenience for Relying Parties and does not displace the List of Trusted Entities of PID Providers, which is the authoritative source of DGEP's trust anchors and from which a Relying Party obtains them. A Relying Party does not rely on a trust anchor obtained from the `trust_anchor` URL alone where that list is available to it (RO_PID_17, Chapter 6 of the Rulebook).
 
@@ -141,29 +139,27 @@ Strings are UTF-8 and carry Romanian diacritics; see Section 7.
 
 ### 2.2 Technical claims
 
-These carry the attestation rather than the User. **[SD-JWT VC] defines which claims are not selectively disclosable; RO_PID_26 excepts those, and adds `iat`.** The Rulebook does not enumerate the first set, so the table below identifies the technical claims a Romanian PID carries and says of each whether it is disclosable — it is not a restatement of the [SD-JWT VC] list.
+These carry the attestation rather than the User. **[SD-JWT VC] defines which claims are not selectively disclosable, and RO_PID_26 excepts those and no others.** The Rulebook does not enumerate the first set, so the table below identifies the technical claims a Romanian PID carries and says of each whether it is disclosable — it is not a restatement of the [SD-JWT VC] list.
 
 | Claim | Carries |
 |---|---|
 | `iss` | The Credential Issuer identifier of DGEP. Not disclosable |
 | `vct` | `urn:eudi:pid:ro:1`. Not disclosable |
-| `iat` | Issuance instant of this technical PID. [SD-JWT VC] leaves this one disclosable at the issuer's option; **RO_PID_26 excepts it**, so it is carried in the clear |
-| `nbf`, `exp` | The technical validity period. Its length is **WITHDRAWN — N12**, Sections 5.2 to 5.4 of the Rulebook being where it will be fixed. RO_PID_14 is in force and requires the technical period to sit inside the administrative one; see the day convention below |
+| `iat` | Issuance instant of this technical PID. **Selectively disclosable**: [SD-JWT VC] does not define it as non-disclosable, and RO_PID_26 excepts nothing further |
+| `nbf`, `exp` | The technical validity period. Its length is **WITHDRAWN — N12**, Sections 5.2 to 5.4 of the Rulebook being where it will be fixed. RO_PID_14 is in force and requires the technical period to sit inside the administrative one; see the day convention above |
 | `status` | The entry of this technical PID in a revocation mechanism, in the form [Token Status List] specifies. **WITHDRAWN — N13**: RO_PID_56 carried it and Chapter 7 is withdrawn in full |
 | `cnf` | The public key this technical PID is bound to. **WITHDRAWN — N12**: RO_PID_36 carries the device-binding requirement and Sections 5.2 to 5.4 of the Rulebook are withdrawn |
 | `_sd_alg` | The digest algorithm for selective disclosure — `sha-256`. Machinery of [SD-JWT VC] rather than a claim of the attestation, and not disclosable |
 
 ### 2.3 Selective disclosure
 
-RO_PID_26 makes **every claim individually selectively disclosable** — every top-level property, every nested property and every array entry — except those [SD-JWT VC] itself defines as non-disclosable, and except `iat`. Section 2.2 identifies the claims a Romanian PID carries in the clear for that reason; it is not an enumeration of the [SD-JWT VC] exceptions, which that specification states and this document does not restate.
+RO_PID_26 makes **every claim individually selectively disclosable** — every top-level property, every nested property and every array entry — except those [SD-JWT VC] itself defines as non-disclosable. Section 2.2 says of each technical claim whether it is disclosable; it is not an enumeration of the [SD-JWT VC] exceptions, which that specification states and this document does not restate.
 
 This is implemented as follows.
 
 - **`place_of_birth` is recursively disclosable.** The claim is hidden behind a digest in the top-level `_sd`, and its disclosure carries an object containing a further `_sd` array holding the digests of its three members. A Wallet Unit disclosing any member releases two disclosures: the one for `place_of_birth` and the one for the member.
 - **`age_equal_or_over` is recursively disclosable on the same pattern.** A Wallet Unit disclosing one threshold releases the `age_equal_or_over` disclosure and that threshold's disclosure, and releases no other.
 - **`nationalities` is an array with a disclosable entry.** The disclosed value contains `{"...": "<digest>"}` in place of the element, and the element carries its own disclosure.
-
-The Type Metadata published for `urn:eudi:pid:ro:1` carries the Claim Selective Disclosure Metadata expressing this rule for every claim (RO_PID_29).
 
 ---
 
@@ -179,9 +175,9 @@ The claim set a Wallet Unit holds after processing every disclosure. This is **n
 {
   "iss": "https://<credential-issuer>",
   "vct": "urn:eudi:pid:ro:1",
-  "iat": 1788253954,
-  "nbf": 1788253954,
-  "exp": 1793524354,
+  "iat": 1788220800,
+  "nbf": 1788220800,
+  "exp": 1793491200,
   "family_name": "POPESCU",
   "given_name": "IOAN-ANDREI",
   "birthdate": "1978-02-12",
@@ -232,35 +228,38 @@ Every URL here is a placeholder and none is an endpoint. The trust anchor URL is
 {
   "alg": "ES256",
   "typ": "dc+sd-jwt",
-  "x5c": ["MIICyzCCAnGgAwIBAgIU…", "MIIC2DCCAn6gAwIBAgIU…"]
+  "x5c": ["MIICyzCCAnGgAwIBAgIU…", "MIIC2DCCAn6gAwIBAgIU…"],
+  "x5u": "https://<certificate-url>",
+  "x5t#S256": "q3rTn0Zc8oKfV5xW…"
 }
 ```
 
-All three members are required, and none is a national choice.
+All five members are required, and none is a national choice.
 
 - **`alg`** is `ES256` — ECDSA with curve P-256 and SHA-256 — which RO_PID_55 requires.
 - **`typ`** is `dc+sd-jwt`, which [SD-JWT VC] requires of every SD-JWT VC.
 - **`x5c`** carries the issuer's signing certificate and its trust chain. Section 4.1 of the Rulebook makes the *IETF SD-JWT VC Profile* of [HAIP] Section 6.1 binding, and that profile resolves the issuer key through `x5c`; the trust anchor certificate is not included in it. A `kid` in place of `x5c` does not comply.
+- **`x5u`** and **`x5t#S256`** are required by Section 4.2 of the Annex to [CIR 2024/2977], as Section 4.1.4 of the Rulebook states. `x5u` refers to the signing certificate of DGEP and `x5t#S256` carries its SHA-256 thumbprint. The URL is a placeholder, like every URL in these examples.
 
-**The certificate values shown are elided and are not real.** The chain a Relying Party validates is the one whose trust anchor is notified under RO_PID_53 and published in the List of Trusted Entities of PID Providers; Chapter 6 of the Rulebook governs.
+**The certificate values and the thumbprint shown are elided and are not real.** The chain a Relying Party validates is the one whose trust anchor is notified under RO_PID_53 and published in the List of Trusted Entities of PID Providers; Chapter 6 of the Rulebook governs.
 
 ### 3.3 Issuer-signed payload
 
-Every attribute is replaced by a digest. Only the technical claims of Section 2.2 appear in the clear.
+Every attribute, and `iat`, is replaced by a digest. The other technical claims of Section 2.2 appear in the clear.
 
 ```json
 {
   "iss": "https://<credential-issuer>",
   "vct": "urn:eudi:pid:ro:1",
-  "iat": 1788253954,
-  "nbf": 1788253954,
-  "exp": 1793524354,
+  "nbf": 1788220800,
+  "exp": 1793491200,
   "_sd_alg": "sha-256",
   "_sd": [
     "6P71ghzhNZDJEhallYlDv5CfwqrcW6aE--JG34L_jQQ",
     "7FZ_UBYhdwO-XXizFysMKu2pkjrZCac9y34lxziQzyE",
     "8FnttSkbelYsnyWWyoNqr6B6jRK4kwLpCJfsUCW8UTU",
     "Ag7ean3tYWvHb8inS4NL5g-MgbkdjfnuKHVWOAiKPyM",
+    "C9f6Diu2pzyol67BwARYJSXlhgbya9zj9CvnM1UhqXk",
     "FXhFX4uOT44NNuWwkZ65I-_aKnWyArdq0kGxcINOfTE",
     "IDfDnFyTqj-ABAP_dGjTLB7NjossSPEQUOpuB7O0ud4",
     "QyBbxl1lkiBb9yW_YXtlsxhAsGOL2K3k8igo3VWaRio",
@@ -289,7 +288,7 @@ Every attribute is replaced by a digest. Only the technical claims of Section 2.
 }
 ```
 
-The fourteen digests are the top-level claims. The nested members of `place_of_birth` and `age_equal_or_over`, and the entry of `nationalities`, do not appear here; their digests sit inside their parents' disclosures.
+The fifteen digests are those of the top-level claims, `iat` among them. The nested members of `place_of_birth` and `age_equal_or_over`, and the entry of `nationalities`, do not appear here; their digests sit inside their parents' disclosures.
 
 ### 3.4 Disclosures
 
@@ -307,6 +306,7 @@ The three disclosures whose value is itself a structure — `place_of_birth`, `a
 
 | Claim | Salt | Disclosure | Digest |
 |---|---|---|---|
+| `iat` | `KaJKL85S5frtQUb3aYI4zg` | `WyJLYUpLTDg1UzVmcnRRVWIzYVlJNHpnIiwgImlhdCIsIDE3ODgyMjA4MDBd` | `C9f6Diu2pzyol67BwARYJSXlhgbya9zj9CvnM1UhqXk` |
 | `family_name` | `pLetfNC9rA6F4MnGU2Knpw` | `WyJwTGV0Zk5DOXJBNkY0TW5HVTJLbnB3IiwgImZhbWlseV9uYW1lIiwgIlBPUEVTQ1UiXQ` | `6P71ghzhNZDJEhallYlDv5CfwqrcW6aE--JG34L_jQQ` |
 | `given_name` | `SfecPJaZKE5iQtIvoeR5Zg` | `WyJTZmVjUEphWktFNWlRdEl2b2VSNVpnIiwgImdpdmVuX25hbWUiLCAiSU9BTi1BTkRSRUkiXQ` | `IDfDnFyTqj-ABAP_dGjTLB7NjossSPEQUOpuB7O0ud4` |
 | `birthdate` | `j8qoTcGF0dZi_I_93jwOOw` | `WyJqOHFvVGNHRjBkWmlfSV85M2p3T093IiwgImJpcnRoZGF0ZSIsICIxOTc4LTAyLTEyIl0` | `8FnttSkbelYsnyWWyoNqr6B6jRK4kwLpCJfsUCW8UTU` |
@@ -376,7 +376,7 @@ The disclosed value is an array in which the element is replaced by a digest ref
 |---|---|---|---|
 | `[0]` = `"RO"` | `dEhLsfxXcOpA-OKdFDBMSQ` | `WyJkRWhMc2Z4WGNPcEEtT0tkRkRCTVNRIiwgIlJPIl0` | `wzbNU4YJxjHDyzEcCc3TlKXiPkqkB0fKOyWtmYIuGx8` |
 
-By RO_PID_08 the array holds exactly one element. A verifier nonetheless has to handle this form, because RO_PID_26 makes every array entry individually selectively disclosable and RO_PID_29 requires the Type Metadata to say so.
+By RO_PID_08 the array holds exactly one element. A verifier nonetheless has to handle this form, because RO_PID_26 makes every array entry individually selectively disclosable.
 
 ### 3.5 Combined issuance format
 
@@ -470,6 +470,8 @@ DGEP may publish further algorithms in a technical profile, each of which must a
 | `validityInfo` | `signed`, `validFrom`, `validUntil`. The length of the period is **WITHDRAWN — N12** |
 | `status` | The revocation mechanism, which Annex 2 of [CIR 2024/2979] specifies for this encoding. **WITHDRAWN — N13** (RO_PID_56) |
 
+**The protected header of `issuerAuth`** carries the algorithm (`-7`), `x5t` with the SHA-256 thumbprint of the signing certificate of DGEP, and `x5u` referring to that certificate, as Section 3.1.6 of the Rulebook requires. The certificate itself is carried in `x5chain` in the unprotected header.
+
 ---
 
 ## 5 mdoc — worked example
@@ -529,7 +531,8 @@ The same User, in the CBOR diagnostic notation of [RFC 8949]. This is the exampl
     ]
   },
   "issuerAuth": [
-    h'a10126',                     / protected header: {1: -7} /
+    h'a301261822822f5820…',        / protected header: {1: -7, 34: [-16, h'…'],
+                                     35: "https://<certificate-url>"} /
     {33: h'3082024a30820…'},       / unprotected header: x5chain /
     h'd8185903f0a7…',              / payload: the tagged MobileSecurityObject below /
     h'9f4d2c07b1e6…'               / signature of DGEP /
@@ -567,9 +570,9 @@ The same User, in the CBOR diagnostic notation of [RFC 8949]. This is the exampl
   },
   "docType": "eu.europa.ec.eudi.pid.1",
   "validityInfo": {
-    "signed":     0("2026-09-01T09:12:34Z"),
-    "validFrom":  0("2026-09-01T09:12:34Z"),
-    "validUntil": 0("2026-11-01T09:12:34Z")
+    "signed":     0("2026-09-01T00:00:00Z"),
+    "validFrom":  0("2026-09-01T00:00:00Z"),
+    "validUntil": 0("2026-11-01T00:00:00Z")
   },
   "status": {
     "status_list": {
@@ -638,10 +641,10 @@ Both are correct. A Relying Party that enrolled a User by scanning their card an
 |---|---|
 | **`RO_PID.md`** | The Romanian PID Rulebook. Governs; this document derives from it. Its **Annex D** registers what is under review. |
 | **`Rationale.md`** | The reasoning behind the national decisions this document states. |
-| **[CIR 2024/2977]** | Commission Implementing Regulation (EU) 2024/2977 on person identification data and electronic attestations of attributes. |
-| **[CIR 2024/2979]** | Commission Implementing Regulation (EU) 2024/2979 on the core functionality of the European Digital Identity Wallet. Its Annex 2 specifies the Attestation Status List mechanism the `status` element uses. |
-| **[CIR 2024/2980]** | Commission Implementing Regulation (EU) 2024/2980 on the notification of electronic identification schemes and of providers. The notification from which the List of Trusted Entities of PID Providers is compiled. |
-| **[BCP 47]** | Tags for Identifying Languages. The form of the `lang` values in the Type Metadata `display` array. |
+| **[CIR 2024/2977]** | Commission Implementing Regulation (EU) 2024/2977 on person identification data and electronic attestations of attributes, as amended by [CIR 2026/1731], which replaced its Annex. |
+| **[CIR 2024/2979]** | Commission Implementing Regulation (EU) 2024/2979 on the core functionality of the European Digital Identity Wallet, as amended by [CIR 2026/1731]. Its Annex 2 specifies the Attestation Status List mechanism the `status` element uses. |
+| **[CIR 2024/2980]** | Commission Implementing Regulation (EU) 2024/2980 on the notification of electronic identification schemes and of providers, as amended by [CIR 2026/1731]. The notification from which the List of Trusted Entities of PID Providers is compiled. |
+| **[CIR 2026/1731]** | Commission Implementing Regulation (EU) 2026/1731 of 15 July 2026 amending Implementing Regulations (EU) 2024/2977, (EU) 2024/2979, (EU) 2024/2980 and (EU) 2024/2982 as regards applicable standards and specifications (OJ L, 2026/1731, 22.7.2026). |
 | **[PID Rulebook]** | PID Rulebook, ARF Annex 3.01. |
 | **[ISO/IEC 18013-5]** | ISO/IEC 18013-5, Personal identification — ISO-compliant driving licence — Part 5. |
 | **[SD-JWT VC]** | SD-JWT-based Verifiable Credentials. |

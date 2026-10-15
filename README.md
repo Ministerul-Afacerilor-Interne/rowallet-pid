@@ -6,10 +6,10 @@ Authored and maintained by the Ministry of Internal Affairs, Direcția Generală
 
 ## Status
 
-**Version 0.1 - Phase 1 Draft, 31 August 2026.** Four things to know before reading further:
+**Version 0.2 - Phase 1 Draft, 15 October 2026.** Four things to know before reading further:
 
 - **Scope.** This version governs the issuance of Romanian PIDs to **Romanian citizens**. The issuance of a PID to a foreign national resident in Romania is out of scope of this version.
-- **The Rulebook cannot presently be notified or assessed as a whole.** Sections 5.2 to 5.4, Chapter 7 and Annex A carry no content, and 25 of the 61 provision identifiers are reserved against them. This is the intended state of a phase 1 draft, not an oversight. **Annex D** registers what is open; **Annexes B and C** record, requirement by requirement, what is and is not transposed.
+- **The Rulebook cannot presently be notified or assessed as a whole.** Sections 5.2 to 5.4, Chapter 7 and Annex A carry no content, and 25 of the 61 provision identifiers are reserved against them. Two more, RO_PID_29 and RO_PID_32, are reserved and unused. This is the intended state of a phase 1 draft, not an oversight. **Annex D** registers what is open; **Annexes B and C** record, requirement by requirement, what is and is not transposed.
 - **Provision identifiers are not stable between draft versions.** While the Rulebook is a draft the numbering closes up whenever a provision is removed, so a citation should name the version it was taken from. From the first published version onwards an identifier will be retired rather than reassigned.
 - Text marked **`UNDER REVIEW`** is unsettled. Where such a passage reads *"To be established - under analysis"*, nothing is required by it and it cannot be implemented against.
 
