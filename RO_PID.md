@@ -18,6 +18,7 @@ Ministry of Internal Affairs — Directorate-General for Communications and Info
 | 0.1 | 31 Aug 2026            | Phase 1 Draft. |
 | 0.2 | 15 Oct 2026            | Remote CEI enrolment. Fixes across all sections.|
 | 0.3 | 28 Oct 2026            | Added ch 5.2.|
+| 0.4 | 10 Nov 2026             | PID Presentation. Trust anchors (ch 6).|
 
 **EU baseline.** This Rulebook profiles the PID Rulebook (ARF Annex 3.01) **version 1.7, dated 17 July 2026**, and version **1.5** of the template for Attestation Rulebooks, dated 8 July 2026. It was assessed against the revisions of Annex 2 of the ARF in force on **4 August 2026** for Topic 3, recorded in Annex B, and on **7 August 2026** for Topic 12, recorded in Annex C. RO_PID_61 governs the review of this Rulebook against later versions of those documents and of the Implementing Regulations it depends on, and requires the dates recorded here to be updated on completion of every review.
 
@@ -51,7 +52,7 @@ This Rulebook follows the chapter structure of [PID Rulebook]. National material
 | Chapter 2 | PID attributes and metadata at a generic level, independent of encoding, including the Romanian domestic attributes. |
 | Chapter 3 | Encoding of the Romanian PID in accordance with [ISO/IEC 18013-5]. |
 | Chapter 4 | Encoding of the Romanian PID in accordance with [SD-JWT VC]. |
-| Chapter 5 | Enrolment and issuance, the issuance protocol and the lifecycle of technical PIDs, presentation, and restrictions on requesting attributes. **Sections 5.1 and 5.2 are in force; Sections 5.3 and 5.4 are withdrawn pending decision — N12.** |
+| Chapter 5 | Enrolment and issuance, the issuance protocol and the lifecycle of technical PIDs, presentation, and restrictions on requesting attributes. **Sections 5.1 to 5.3 are in force; Section 5.4 is withdrawn pending decision — N12.** |
 | Chapter 6 | Trust anchors used to verify Romanian PIDs, and, in Section 6.1, the cryptographic algorithms used. |
 | Chapter 7 | Revocation of Romanian PIDs and revocation checking by Relying Parties. **Withdrawn pending decision — N13.** |
 | Chapter 8 | Compliance of this Rulebook with the EUDI framework, the ARF, and the relevant Regulations, and, in Section 8.1, the obligation to maintain that compliance. |
@@ -84,9 +85,9 @@ A provision or section marked **UNDER REVIEW** is not settled. It SHALL be read 
 - Where the marked text states a rule, that rule is the position of this Rulebook as currently drafted and may be implemented against, but it may change.
 - Where the marked text withdraws **a particular value** inside a provision that otherwise remains in force, the provision applies and only that value is unsettled. RO_PID_17 is the case: the attribute `trust_anchor` SHALL be included and `attestation_legal_category` SHALL contain `PID`, while the URL that `trust_anchor` carries is *to be established*.
 
-**The identifiers of a withdrawn provision are reserved within the current draft.** A cross-reference elsewhere in this Rulebook to a provision whose content is withdrawn is a reference to that provision **as it will be settled**, and is not a defect in the cross-reference. This applies to RO_PID_47 to RO_PID_52, and to RO_PID_56 to RO_PID_60, whose sections are withdrawn in full.
+**The identifiers of a withdrawn provision are reserved within the current draft.** A cross-reference elsewhere in this Rulebook to a provision whose content is withdrawn is a reference to that provision **as it will be settled**, and is not a defect in the cross-reference. This applies to RO_PID_50 to RO_PID_52 and to RO_PID_56 to RO_PID_60, whose sections are withdrawn in full, and to RO_PID_55, which is withdrawn.
 
-**This Rulebook cannot presently be notified or assessed as a whole.** Sections 5.3 and 5.4, Chapter 7 and Annex A carry no content, and Annexes B and C record which requirements are consequently not transposed. That is the intended state for the present round and not an oversight.
+**This Rulebook cannot presently be notified or assessed as a whole.** Section 5.4, RO_PID_55, Chapter 7 and Annex A carry no content, and Annexes B and C record which requirements are consequently not transposed. That is the intended state for the present round and not an oversight.
 
 ### 1.4 Terminology
 
@@ -114,6 +115,7 @@ This document uses the terminology specified in Annex 1 of the ARF. In addition,
 | **[CIR 2024/2979]** | Commission Implementing Regulation (EU) 2024/2979 on the core functionality of the European Digital Identity Wallet, as amended by [CIR 2026/1731]. |
 | **[CIR 2024/2980]** | Commission Implementing Regulation (EU) 2024/2980 on the notification to the Commission of electronic identification schemes and of providers, as amended by [CIR 2026/1731]. |
 | **[CIR 2024/2982]** | Commission Implementing Regulation (EU) 2024/2982 on protocols and interfaces for issuance and presentation, as amended by [CIR 2026/1731]. |
+| **[CIR 2025/848]** | Commission Implementing Regulation (EU) 2025/848 on the registration of wallet-relying parties, applicable from 24 December 2026. The basis of the registration of DGEP required by RO_PID_53. |
 | **[CIR 2025/1569]** | Commission Implementing Regulation (EU) 2025/1569. Article 8 establishes the catalogue of schemes for the attestation of attributes, in which RO_PID_30 requires the scheme of the domestic namespace and type to be published. |
 | **[CIR 2026/1731]** | Commission Implementing Regulation (EU) 2026/1731 of 15 July 2026 amending Implementing Regulations (EU) 2024/2977, (EU) 2024/2979, (EU) 2024/2980 and (EU) 2024/2982 as regards applicable standards and specifications (OJ L, 2026/1731, 22.7.2026). |
 | **[ARF]** and **[PID Rulebook]** | The Architecture Reference Framework and its Annex 3.01, the technical reference profiled by this Rulebook. |
@@ -288,9 +290,9 @@ A translated form of the authority name is carried by the Credential Issuer Meta
 
 *The words "and if possible time" in the two definitions above are those of [CIR 2024/2977], which permits a time element to be carried. This Rulebook does not exercise that permission: RO_PID_14 requires both values to carry a date alone, and the encodings specified in Chapters 3 and 4 admit no time element in either.*
 
-**RO_PID_13** — `expiry_date` SHALL be computed from `issuance_date`. It SHALL be set to the date **one day before the second anniversary** of `issuance_date`, so that the administrative validity period of a logical Romanian PID is exactly two years under the convention in RO_PID_14. Where `issuance_date` is 29 February, the anniversary is taken as 28 February.
+**RO_PID_13** — `expiry_date` SHALL be computed from `issuance_date`. It SHALL be set to the date **one day before the fourth anniversary** of `issuance_date`, so that the administrative validity period of a logical Romanian PID is exactly four years under the convention in RO_PID_14. Where `issuance_date` is 29 February and its fourth anniversary falls in a year that is not a leap year, the anniversary is taken as 28 February.
 
-*Example: a logical PID with `issuance_date` `2026-09-01` has `expiry_date` `2028-08-31`.*
+*Example: a logical PID with `issuance_date` `2026-09-01` has `expiry_date` `2030-08-31`.*
 
 `expiry_date` SHALL NOT be derived from the expiry date of the CEI on the basis of which the logical PID was issued, and the administrative validity period of a logical Romanian PID is independent of the validity of that document.
 
@@ -300,7 +302,7 @@ A translated form of the authority name is carried by the Credential Issuer Meta
 
 - `issuance_date` and `expiry_date`, and their [SD-JWT VC] counterparts `date_of_issuance` and `date_of_expiry`, carry no time element. For the purpose of relating them to technical validity, the administrative validity period of a logical PID begins at 00:00:00 on `issuance_date` and ends at 23:59:59 on `expiry_date`, both in the local time of Romania, converted to UTC wherever a technical field requires an instant.
 - A Relying Party determining whether a Romanian PID is within its administrative validity period SHALL apply the convention in the preceding bullet, and SHALL NOT evaluate the two dates against its own local date. The two can differ by a day where the Relying Party is in another time zone. No such question arises for `validFrom`, `validUntil`, `nbf` and `exp`, which carry absolute instants.
-- A technical PID SHALL NOT carry a `validFrom` or `nbf` earlier than the beginning of that administrative validity period. A technical PID issued before the end of that period may remain within its technical validity period after it, for no longer than RO_PID_38 permits.
+- A technical PID SHALL NOT carry a `validFrom` or `nbf` earlier than the beginning of that administrative validity period. Nor SHALL its technical validity period extend beyond the end of that administrative validity period, as RO_PID_38 provides.
 - DGEP SHALL cease supplying further technical PIDs when the administrative validity period ends.
 - Throughout the administrative validity period, **DGEP SHALL keep available to the Wallet Unit a technical PID whose technical validity period has not expired**, and every Wallet Provider SHALL ensure that its Wallet Units request one, under the replenishment rules in RO_PID_42. Neither duty discharges the other: DGEP cannot deliver a technical PID that is not requested, and a Wallet Unit cannot obtain one that is not offered.
 - This policy SHALL be applied identically to both encodings, so that the administrative dates of the two formats of the same logical PID never diverge.
@@ -359,9 +361,9 @@ Each assertion SHALL be derived from the `birth_date` of record in RNEP. It SHAL
 
 ## 3 ISO/IEC 18013-5-compliant encoding of the Romanian PID
 
-This chapter specifies the encoding of the Romanian PID where it complies with [ISO/IEC 18013-5]. This encoding is used principally for proximity presentation.
+This chapter specifies the encoding of the Romanian PID where it complies with [ISO/IEC 18013-5]. Under RO_PID_48 this encoding, like the one in Chapter 4, is presented remotely.
 
-*Requirement ARB_02 in Topic 12 in Annex 2 of the ARF obliges the author of an Attestation Rulebook to analyse whether a User must be able to present the attestation in proximity to the Relying Party without using the internet, and, if so, to require the [ISO/IEC 18013-5] format. That analysis has been carried out. A Romanian PID is presented predominantly face to face, in settings where the User, the Relying Party, or neither, has connectivity. Both encodings are accordingly mandatory under RO_PID_03.*
+*Requirement ARB_02 in Topic 12 in Annex 2 of the ARF obliges the author of an Attestation Rulebook to analyse whether a User must be able to present the attestation in proximity to the Relying Party without using the internet, and, if so, to require the [ISO/IEC 18013-5] format. That analysis has been carried out. A User is not required to be able to present a Romanian PID in proximity without using the internet: RO_PID_48 provides for remote presentation only. Both encodings are nevertheless mandatory under RO_PID_03, each being presented remotely under RO_PID_48.*
 
 ### 3.1 Encoding of PID attributes and metadata
 
@@ -449,7 +451,7 @@ place_of_birth =
 
 `place_of_birth` SHALL contain at least one of the key-value pairs `"country"`, `"region"`, or `"locality"`. Which of them a Romanian PID carries, and what each holds, is governed by **RO_PID_07**, which fixes the value, the template on which it is composed, and how that value is distributed across the three members above.
 
-The whole map is presented whenever the User approves presentation of the attribute; its members cannot be selectively disclosed independently. This is a genuine limitation of the [ISO/IEC 18013-5] encoding and it has no counterpart in the [SD-JWT VC] encoding, where PID_21 requires `country`, `region` and `locality` to be individually selectively disclosable; see RO_PID_26. A User who wishes to disclose only the country of birth can therefore do so in a remote presentation but not in a proximity presentation, and a Wallet Unit SHOULD make that clear at the point of approval. **What else a User can disclose on its own in a remote presentation follows from the distribution RO_PID_07 fixes**: the county of birth is carried in `region` and can therefore be released without the locality, whereas the elements composed into `locality` cannot be separated from one another.
+The whole map is presented whenever the User approves presentation of the attribute; its members cannot be selectively disclosed independently. This is a genuine limitation of the [ISO/IEC 18013-5] encoding and it has no counterpart in the [SD-JWT VC] encoding, where PID_21 requires `country`, `region` and `locality` to be individually selectively disclosable; see RO_PID_26. A User who wishes to disclose only the country of birth can therefore do so in a [SD-JWT VC] presentation but not in an [ISO/IEC 18013-5] presentation, and a Wallet Unit SHOULD make that clear at the point of approval. **What else a User can disclose on its own in a [SD-JWT VC] presentation follows from the distribution RO_PID_07 fixes**: the county of birth is carried in `region` and can therefore be released without the locality, whereas the elements composed into `locality` cannot be separated from one another.
 
 #### 3.1.5 Encoding of Romanian domestic attributes
 
@@ -517,7 +519,7 @@ The attributes and their values in this example:
 | | `place_of_birth` | country `RO`, region `Cluj`, locality `Mun.Cluj-Napoca` |
 | | `nationality` | `["RO"]` |
 | | `portrait` | empty, per the transitional rule in RO_PID_24 |
-| | `expiry_date` | `2028-08-31` |
+| | `expiry_date` | `2030-08-31` |
 | | `issuance_date` | `2026-09-01` |
 | | `issuing_authority` | `Direcția Generală pentru Evidența Persoanelor` |
 | | `issuing_country` | `RO` |
@@ -550,7 +552,7 @@ The attributes and their values in this example:
       24(<<{"digestID": 5, "random": h'71b8fd0e34a95c26e0d31b7f48a2069c',
             "elementIdentifier": "portrait", "elementValue": h''}>>),
       24(<<{"digestID": 6, "random": h'0f6ac35d9127eb480a3c6d21f85b9740',
-            "elementIdentifier": "expiry_date", "elementValue": 1004("2028-08-31")}>>),
+            "elementIdentifier": "expiry_date", "elementValue": 1004("2030-08-31")}>>),
       24(<<{"digestID": 7, "random": h'96e1720b4dc8a35f61b09e7d3204ca85',
             "elementIdentifier": "issuance_date", "elementValue": 1004("2026-09-01")}>>),
       24(<<{"digestID": 8, "random": h'2ab7c6019e5d84f37012bc6a95e3d074',
@@ -641,14 +643,14 @@ Notes on the example:
 - **`deviceKey` is not the key in the Section 4.3 example.** The two examples are different technical PIDs of the same logical PID, and RO_PID_41 requires every element capable of being unique — including the device-binding public key and every salt and digest — to differ between them. Reading the two examples as one attestation in two encodings would miss the point of issuing technical PIDs in batches.
 - **Every URL in this listing is a placeholder and none is an endpoint.** The trust anchor URL is not settled (RO_PID_17; **N9** in Annex D) and the status list URL will be fixed by Chapter 7, so neither is reproduced here.
 - The **salts** shown are 16 bytes, as [ISO/IEC 18013-5] requires at minimum, and are real. **The digest values in `valueDigests`, the certificate chain, the payload and the signature are illustrative and are not recomputable from this listing**; the digest map of the `eu.europa.ec.eudi.pid.1` namespace shows two entries and elides the rest, since a digest carries no information about this Rulebook. The attributes, their identifiers and their values are shown in full. **No digest in this listing is recomputable**, here or in `RO_PID_Data_Model.md`, which reproduces it unchanged; the disclosure digests of the [SD-JWT VC] encoding, in Section 3.4 of that document, are real and can be.
-- The **signature algorithm** in the protected header is `-7`, that is ECDSA with P-256 and SHA-256, and the `deviceKey` is a P-256 key. Both are what RO_PID_55 requires, as is the SHA-256 in `digestAlgorithm`.
+- The **signature algorithm** in the protected header is `-7`, that is ECDSA with P-256 and SHA-256, and the `deviceKey` is a P-256 key. These, and the SHA-256 in `digestAlgorithm`, are the algorithms of this example; the algorithms a Romanian PID uses are under review (RO_PID_55, **N21**).
 - The **protected header** also carries `x5t` (label 34) and `x5u` (label 35), as Section 3.1.6 requires. `x5t` holds the SHA-256 thumbprint (algorithm `-16`) of the certificate of DGEP, and `x5u` refers to that certificate. Their bytes are elided and the URL is a placeholder; the certificate itself is in `x5chain` in the unprotected header.
 
 ---
 
 ## 4 SD-JWT VC-based encoding of the Romanian PID
 
-This chapter specifies the encoding of the Romanian PID where it complies with [SD-JWT VC]. This encoding is used principally for remote presentation.
+This chapter specifies the encoding of the Romanian PID where it complies with [SD-JWT VC]. Under RO_PID_48 this encoding, like the one in Chapter 3, is presented remotely.
 
 ### 4.1 Encoding of PID attributes and metadata
 
@@ -793,7 +795,7 @@ EXAMPLE: The following shows the payload of a Romanian PID in [SD-JWT VC] format
   },
 
   "date_of_issuance": "2026-09-01",
-  "date_of_expiry": "2028-08-31",
+  "date_of_expiry": "2030-08-31",
 
   "issuing_authority": "Direcția Generală pentru Evidența Persoanelor",
   "issuing_country": "RO",
@@ -824,7 +826,7 @@ Notes on the example:
 - **`nbf`** and **`exp`** express the technical validity period. Here they are 00:00:00 in the local time of Romania on 1 September 2026 and on 1 November 2026 — `2026-08-31T21:00:00Z` and `2026-10-31T22:00:00Z` — the start of a whole Romanian day, as RO_PID_41 requires, two months apart. `iat` carries the same instant as `nbf`. `date_of_issuance` and `date_of_expiry` express the administrative validity period of the logical PID, and `nbf` does not precede its beginning, as RO_PID_14 requires. This User's next age-threshold birthday is their sixty-fifth, in 2043, so the age-threshold constraint in RO_PID_38 does not shorten it here; for a User approaching one it would.
 - **`status`** references the entry of this technical PID in the Attestation Status List Chapter 7 will provide for, in the form [Token Status List] specifies. The index is assigned at random, as Chapter 7 will require.
 - **`picture`** is present and empty, as the transitional rule in RO_PID_24 requires. An empty JSON string is the encoding RO_PID_25 prescribes. Once the attribute is populated it carries the whole base64-encoded JPEG in a `data:` URL, subject to the quality constraints of RO_PID_24 and to any constraint on the encoded size added there.
-- **Every URL in this listing is a placeholder and none is an endpoint.** The trust anchor URL is not settled (RO_PID_17; **N9** in Annex D) and the status list URL will be fixed by Chapter 7, so neither is reproduced here. The Credential Issuer identifier is not fixed by this Rulebook at all: it is published in the Credential Issuer Metadata and notified as a service supply point under RO_PID_53.
+- **Every URL in this listing is a placeholder and none is an endpoint.** The trust anchor URL is not settled (RO_PID_17; **N9** in Annex D) and the status list URL will be fixed by Chapter 7, so neither is reproduced here. The Credential Issuer identifier is not fixed by this Rulebook at all: it is published in the Credential Issuer Metadata.
 - Every claim shown is individually selectively disclosable under RO_PID_26, including each member of `place_of_birth` and each of the four members of `age_equal_or_over`, except those claims that [SD-JWT VC] itself defines as non-selectively-disclosable.
 
 Note: `personal_numeric_code` is the only persistent identifier in the attestation, and, read on its own, it discloses that the User is male, was born on 12 February 1978, and was registered in the county whose code is 12 — which is why Section 5.4 will restrict when it may be requested. It is the one claim in this example that discloses materially more than it appears to: `age_equal_or_over` was included precisely so that a Relying Party needing an age check need not request `birthdate`, and requesting the CNP instead would obtain the date of birth anyway.
@@ -837,7 +839,7 @@ Users request issuance of Romanian PIDs from DGEP, manage them in their Wallet U
 
 Users, DGEP, and Relying Parties do this in compliance with all applicable requirements in the European Digital Identity Regulation and the corresponding Implementing Acts, as described in the ARF.
 
-**Sections 5.1 and 5.2 are in force. Sections 5.3 and 5.4 are withdrawn pending decision**, as Annex D records at **N12**.
+**Sections 5.1 to 5.3 are in force. Section 5.4 is withdrawn pending decision**, as Annex D records at **N12**.
 
 ### 5.1 Enrolment and issuance
 
@@ -904,7 +906,7 @@ DGEP SHALL verify the signature of each attestation under the public key of the 
 
 *Transposes requirements WUA_25 and WUA_11a in Topic 9 in Annex 2 of the ARF, in part. The procedures to which WUA_25 and WUA_11a refer, in Appendices E and F.4 of [OpenID4VCI], are not adopted; the verification and the occasions on which it is performed are stated instead. Nor is the validation that each attestation is not revoked, which WUA_25 and WUA_11a add, requirement VCR_12a in Topic 7, on support for the mechanism by which that revocation status is verified, or requirement WUA_36, on compliance with [Technical Specification 3]. The duty to verify both attestations is stated in RO_PID_31 and is not restated here; this provision fixes the manner of that verification and the occasions on which it is performed.*
 
-**RO_PID_34** — DGEP SHALL provide Credential Issuer Metadata in accordance with [OpenID4VCI] at every service supply point notified under RO_PID_53. The `display` array of that metadata SHALL contain at least two entries for the Credential Issuer: one with `locale` set to `ro` and `name` set to the value fixed in RO_PID_12, and one with `locale` set to `en` carrying an English rendering of that name. Further languages MAY be added. That metadata SHALL also carry the `batch_credential_issuance` parameter, with the `batch_size` required by RO_PID_44.
+**RO_PID_34** — DGEP SHALL provide Credential Issuer Metadata in accordance with [OpenID4VCI] under its Credential Issuer identifier. The `display` array of that metadata SHALL contain at least two entries for the Credential Issuer: one with `locale` set to `ro` and `name` set to the value fixed in RO_PID_12, and one with `locale` set to `en` carrying an English rendering of that name. Further languages MAY be added. That metadata SHALL also carry the `batch_credential_issuance` parameter, with the `batch_size` required by RO_PID_44.
 
 DGEP SHALL return its Credential Issuer Metadata both unsigned, using the media type `application/json`, and signed, using the media type `application/jwt`, according to the `Accept` header of the request, as Section 12.2.2 of [OpenID4VCI] provides. DGEP SHALL sign the signed form as specified in Section 12.2.3 of [OpenID4VCI], using the private key corresponding to the public key in its access certificate, and SHALL include that access certificate in the `x5c` parameter of the JOSE header of the signature.
 
@@ -938,9 +940,19 @@ The Romanian PID SHALL NOT be cryptographically bound to any other attestation h
 
 It SHALL end before 00:00:00, in the local time of Romania, on the next date on which any assertion of the `age_equal_or_over` attribute of that User would change value.
 
-The `exp` claim of a [SD-JWT VC]-compliant technical PID, and the `validUntil` element of the Mobile Security Object of an [ISO/IEC 18013-5]-compliant technical PID, SHALL reflect the resulting period. Every technical PID in a batch SHALL carry the same technical validity period.
+It SHALL NOT end later than the end of the administrative validity period of the logical PID from which it derives, taken for this purpose as 00:00:00, in the local time of Romania, on the day after `expiry_date`. A technical PID issued one month before that end is accordingly valid for one month at most.
 
-*Requirement ISSU_12c in Topic 10 in Annex 2 of the ARF, which would end the technical validity period no later than the revocation maintenance periods of the Wallet Instance Attestation and the Key Attestation, is not adopted. Nor is the technical validity period limited by the end of the administrative validity period of the logical PID; RO_PID_14 limits only its beginning. The constraint by reference to the age assertions keeps each assertion of RO_PID_20 true throughout the technical validity period, rather than only at the instant at which RO_PID_43 requires it to be true.*
+It SHALL end before both the `client_status.exp` of the Wallet Instance Attestation and the `key_storage_status.exp` of the Key Attestation presented to DGEP in the issuance of that technical PID. For this purpose:
+
+- the Wallet Instance Attestation is the one DGEP verified under RO_PID_33 in the Pushed Authorization Request or, for a replenishment batch under RO_PID_42, in the token request that uses the refresh token;
+- the Key Attestations are every one DGEP verified under RO_PID_33 in the issuance of that batch, including, for the first batch, the one in the token request that exchanges the authorization code; for a replenishment batch whose Credential Request carries none, it is the one verified in the token request that exchanged the authorization code from which the refresh token derives. Where there are several, the earliest `key_storage_status.exp` among them governs; and
+- DGEP SHALL NOT take the `exp` claim at the top level of either attestation as the end of either period.
+
+DGEP SHALL NOT issue a technical PID where the Wallet Instance Attestation carries no `client_status.exp`, where such a Key Attestation carries no `key_storage_status.exp`, or where the constraints in this provision leave no technical validity period that ends after the moment of issuance.
+
+The `exp` claim of a [SD-JWT VC]-compliant technical PID, and the `validUntil` element of the Mobile Security Object of an [ISO/IEC 18013-5]-compliant technical PID, SHALL reflect the resulting period, which is set by whichever of these constraints ends earliest. Every technical PID in a batch SHALL carry the same technical validity period.
+
+*The fourth and fifth paragraphs apply requirement LC_GEN-3 in Annex Ib to [CIR 2024/2979], which binds DGEP as a provider of person identification data, and transpose requirement ISSU_12c in Topic 10 in Annex 2 of the ARF, which states the same constraint. Requirements C_WIA-3 and C_KA-3 in that Annex forbid reading the top-level `exp` of either attestation as the end of its revocation maintenance period, and requirements C_WIA-1 and C_KA-1 require the Wallet Instance Attestation to carry `client_status` and the Key Attestation `key_storage_status`, so the Wallet Unit of a conforming Wallet Solution presents both claims. The third paragraph is national: no technical PID outlives the logical PID from which it derives. The constraint by reference to the age assertions keeps each assertion of RO_PID_20 true throughout the technical validity period, rather than only at the instant at which RO_PID_43 requires it to be true.*
 
 *A technical PID valid for two months is not a short-lived attestation within the meaning of requirements VCR_01 and VCR_01b in Topic 7 in Annex 2 of the ARF, which set that threshold at 24 hours or less. The Romanian PID is a revocable attestation, and Chapter 7, which is withdrawn pending decision, will govern its revocation.*
 
@@ -1027,13 +1039,37 @@ Deletion by the User does not revoke the logical PID. A User who deletes a Roman
 
 *The fourth rule has no counterpart in Topic 51. It follows from the interaction of RO_PID_42, which requires replenishment to continue while the logical PID is valid and not revoked, with PAD_03, which forbids the Wallet Unit to notify DGEP of a deletion.*
 
-### 5.3 to 5.4 — Presentation, and restrictions on requesting attributes
+### 5.3 Presentation and selective disclosure
+
+**RO_PID_47** — A Wallet Unit SHALL present only those attributes that the User has approved for the presentation in question. It SHALL NOT present an attribute that the Relying Party did not request, and SHALL NOT present an attribute the User has declined, even where that attribute is mandatory under Chapter 2.
+
+Both encodings specified in this Rulebook support selective disclosure at the level of the individual attribute, subject to the structural limitations identified in Sections 3.1.3, 3.1.4, and 4.1.3, which a Wallet Unit SHOULD make evident to the User at the point of approval.
+
+A Wallet Unit SHALL NOT present any attribute of a Romanian PID until it has successfully authenticated the User, as Article 3(1) of [CIR 2024/2979] requires.
+
+Where a Relying Party requests the `portrait` attribute, which a [SD-JWT VC]-compliant PID carries as the claim `picture` (Section 4.1), a Wallet Unit SHALL warn the User that the request involves the presentation of biometric data, and SHALL ensure that the User's approval for presenting the portrait is explicit. Silence, or a pre-ticked box, SHALL NOT suffice.
+
+*The third paragraph applies Article 3(1) of [CIR 2024/2979], which forbids a Wallet Unit to perform any of the functionalities listed in Article 5a(4) of Regulation (EU) No 910/2014, presentation among them, until it has authenticated the User. It transposes requirement RPA_08 in Topic 6 in Annex 2 of the ARF to that extent; authentication of the User specifically before the approval or refusal of the release of an attribute is not adopted. The fourth paragraph transposes requirement RPA_07c in the same Topic.*
+
+**RO_PID_48** — **Every Wallet Unit, and every Relying Party that requests a Romanian PID, SHALL support the remote presentation of a Romanian PID**, using [OpenID4VP] as profiled by [HAIP] in accordance with Annex II to [CIR 2024/2982], to which Article 5(1) and 5(2) of that Regulation refer.
+
+This Rulebook provides for no presentation of a Romanian PID in proximity, and for none mediated by the W3C Digital Credentials API. It does not displace the duty of Wallet Providers under Article 5(1) of [CIR 2024/2982] and Annex II to it to support those mechanisms.
+
+**DGEP, Wallet Providers, Wallet Units and Relying Parties SHALL NOT support server retrieval** as specified in [ISO/IEC 18013-5] for requesting or presenting the attributes of a Romanian PID, as requirement ISO/IEC 18013-SUPPORT-01 in Annex II to [CIR 2024/2982] provides. Article 5 of that Regulation, to which the Annex is attached, binds Wallet Providers; the prohibition binds DGEP and Relying Parties through this Rulebook.
+
+*The first paragraph transposes requirements OIA_03b and OIA_03c in Topic 1 in Annex 2 of the ARF, and requirement OIA_01a so far as it refers to them. The mechanism mediated by the W3C Digital Credentials API, which OIA_01a also requires and OIA_08 to OIA_08b govern, is not adopted. Requirement OIA_01 in Topic 1 and requirements ProxId_01, ProxId_01a and ProxId_05 in Topic 24, on presentation in proximity using device retrieval as specified in [ISO/IEC 18013-5], are not adopted. The last paragraph transposes ProxId_02, which is addressed to PID Providers by name and which Annex II to [CIR 2024/2982] restates.*
+
+**RO_PID_49** — A Wallet Unit SHALL NOT use a PID private key to sign transactional data received from a Relying Party in a presentation request.
+
+*Restates the requirement added at version 1.7 of [PID Rulebook].*
+
+### 5.4 Restrictions on requesting attributes
 
 *To be established — under analysis.*
 
-> **UNDER REVIEW — N12.** These sections are not settled and their content is withdrawn pending decision. They will cover **presentation and selective disclosure**; and the **restrictions on requesting** the national identification number.
+> **UNDER REVIEW — N12.** This section is not settled and its content is withdrawn pending decision. It will cover the **restrictions on requesting** the national identification number, and the **retention of the portrait** by Relying Parties.
 >
-> The identifiers **RO_PID_47 to RO_PID_52** are reserved for them. A reference to any of them made elsewhere in this Rulebook is a reference to the provision as it will be settled.
+> The identifiers **RO_PID_50 to RO_PID_52** are reserved for it. A reference to any of them made elsewhere in this Rulebook is a reference to the provision as it will be settled.
 
 ---
 
@@ -1043,28 +1079,17 @@ PID trust anchors are public keys and associated information, needed by Relying 
 
 **RO_PID_53** — Romania SHALL notify DGEP as a PID Provider to the Commission as specified in the European Digital Identity Regulation and [CIR 2024/2980], using the common system provided by the Commission and complying with the applicable requirements of [Technical Specification 2]. Relying Parties retrieve the trust anchors of DGEP from the List of Trusted Entities of PID Providers published by the Commission.
 
-That notification SHALL include at least the following, as requirement PPNot_02 in Topic 31 in Annex 2 of the ARF requires:
+DGEP SHALL ensure that every Romanian PID it issues contains the information necessary for its authentication and validation, as Article 3(2) of [CIR 2024/2977] requires.
 
-| # | Notified information |
-|---|---|
-| 1 | Identification data for DGEP: Romania as the Member State of establishment, the name of record *Direcția Generală pentru Evidența Persoanelor*, and, where applicable, the registration number and identification data of the official record in which it is registered. |
-| 2 | The trust anchors of DGEP supporting the authentication of Romanian PIDs. |
-| 3 | The trust anchors supporting the authentication of the Attestation Status Lists provided for in Chapter 7. These are distinct from the trust anchors in row 2. |
-| 4 | The trust anchors of the Access Certificate Authorities issuing access certificates to DGEP, supporting the authentication of DGEP by Wallet Units at the service supply points in row 5. |
-| 5 | The service supply point or points: the URL or URLs at which a Wallet Unit can begin the process of requesting and obtaining a Romanian PID. |
-| 6 | The URL at which Relying Parties and other entities can retrieve the Attestation Status Lists, as Chapter 7 will require and as requirement ARB_24a in Topic 12 in Annex 2 of the ARF requires. |
+*The paragraph above applies Article 3(2) of [CIR 2024/2977], and transposes requirement PPNot_03 in Topic 31 in Annex 2 of the ARF to that extent. How DGEP identifies itself to Wallet Units, by its access certificate, is governed by RO_PID_34. The further duties of PPNot_03 and PPNot_04, that every PID and every access certificate be capable of authentication against the trust anchors notified for DGEP, are not adopted, and neither is requirement PPNot_03a, on the authentication of the Attestation Status Lists against trust anchors notified for those lists.*
 
-DGEP SHALL ensure that every Romanian PID it issues can be authenticated using the trust anchors notified under row 2; that every Attestation Status List used to revoke a Romanian PID can be authenticated using the trust anchors notified under row 3; and that its access certificates can be authenticated using the Access Certificate Authority trust anchors notified under row 4.
+The **List of Trusted Entities of PID Providers**, published by the Commission at `https://eidas.ec.europa.eu/efda/wallet/lists-of-trusted-entities/pid-providers`, is the list of providers of person identification data that the Commission compiles from the notifications made under this provision and publishes under Article 5(2) of [CIR 2024/2980]. Under Section 5 of the Annex to [CIR 2024/2977], that list enables the authentication of a Romanian PID. **A Relying Party SHALL authenticate and validate every Romanian PID it requests from a Wallet Unit**, as Article 5b(9) of Regulation (EU) No 910/2014 requires. The URL carried in the `trust_anchor` attribute under RO_PID_17 is a convenience and does not displace that list.
 
-*Requirements PPNot_03, PPNot_03a and PPNot_04 impose the three assurances in the paragraph above. The trust anchor that authenticates a status list is not the trust anchor that signs a PID.*
+*[PID Rulebook] Section 6 refers to a Trusted List. The trust anchors of notified PID Providers are in fact published in a List of Trusted Entities complying with [ETSI TS 119 602], as requirements PPNot_05 and PPNot_07 in Annex 2 of the ARF provide and as the published list shows. This Rulebook follows the list that exists. Requirements PPNot_05 and OIA_12 would further oblige a Relying Party to accept DGEP's trust anchors because of their publication in that list, and to validate the signature of a PID with a trust anchor taken from it; they are not adopted as duties, and the paragraph above states the duty Article 5b(9) of Regulation (EU) No 910/2014 imposes.*
 
-The **List of Trusted Entities of PID Providers**, compiled by the Commission from the notifications made under this provision and published at `https://eidas.ec.europa.eu/efda/wallet/lists-of-trusted-entities/pid-providers`, is the authoritative source of the trust anchors of DGEP. A Relying Party verifying a Romanian PID SHALL obtain those trust anchors from that list. The URL carried in the `trust_anchor` attribute under RO_PID_17 is a convenience and does not displace it; a Relying Party SHALL NOT rely on a trust anchor obtained from that URL alone where the List of Trusted Entities is available to it.
+**Registration is distinct from notification, and both are required.** In addition to the notification above, **DGEP SHALL register in the national register of wallet-relying parties** that Romania establishes under Article 3 of [CIR 2025/848], as Article 5b(1) of Regulation (EU) No 910/2014 requires, with the entitlement `PID_Provider` set out in point 12(e) of Annex I to that Regulation. DGEP SHALL provide that register with at least the information set out in Annex I, and SHALL ensure that it is accurate at the time of registration, as Article 5(1) and 5(2) of [CIR 2025/848] require. DGEP SHALL update the registered information without delay, as Article 5b(6) of Regulation (EU) No 910/2014 and Article 5(3) of [CIR 2025/848] require.
 
-*[PID Rulebook] Section 6 refers to a Trusted List. The trust anchors of notified PID Providers are in fact published in a List of Trusted Entities complying with [ETSI TS 119 602], as requirements PPNot_05 and PPNot_07 in Annex 2 of the ARF provide and as the published list shows. This Rulebook follows the list that exists.*
-
-**Registration is distinct from notification, and both are required.** In addition to the notification above, DGEP SHALL be registered in the Romanian registry of PID Providers established under Topic 27 in Annex 2 of the ARF. DGEP SHALL register one or more Services and, for each, the type or types of attestation that Service intends to issue to Wallet Units; for every Service issuing the Romanian PID, that SHALL include the Romanian PID. DGEP SHALL make any update necessary to keep the registered information correct, without undue delay.
-
-*The two duties above are requirements Reg_10e and Reg_08 in Topic 27 in Annex 2 of the ARF. Registration may cause a registration certificate to be issued under RPRC_13, whose contents RPRC_15 governs; this Rulebook does not use one in the issuance of a Romanian PID. The vetting of PID Providers and the maintenance of the registry are the Member State's under Reg_19 and Reg_20.*
+*The paragraph above applies Article 5b(1) and 5b(6) of Regulation (EU) No 910/2014 and Article 5 of [CIR 2025/848], which applies from 24 December 2026, and transposes requirement Reg_08 in Topic 27 in Annex 2 of the ARF. Requirement Reg_10e, under which a PID Provider registers one or more Services and the types of attestation each intends to issue, is not adopted. Registration may cause a registration certificate to be issued under RPRC_13, whose contents RPRC_15 governs; this Rulebook does not use one in the issuance of a Romanian PID. The vetting of PID Providers and the maintenance of the register are the Member State's under Reg_19 and Reg_20, and under Articles 3, 4 and 6 of [CIR 2025/848].*
 
 **RO_PID_54** — The private keys used by DGEP to sign Romanian PIDs SHALL be generated and held in a hardware security module certified to at least **FIPS 140-3 Level 3** or **Common Criteria EAL4+**, SHALL NOT be exportable from that module in plaintext, and SHALL be subject to a documented lifecycle covering generation, activation, rotation, revocation, and destruction. **DGEP SHALL operate that infrastructure.**
 
@@ -1072,21 +1097,9 @@ Rotation of a signing key SHALL NOT invalidate technical PIDs already issued und
 
 ### 6.1 Cryptographic algorithms
 
-**RO_PID_55** — DGEP, RO Wallet and Relying Parties SHALL use only cryptographic algorithms included in the [ECCG Agreed Cryptographic Mechanisms] when issuing, presenting or verifying a Romanian PID, a Wallet Instance Attestation or a Key Attestation.
+**RO_PID_55** — *To be established — under analysis.*
 
-A Romanian PID SHALL use at least the following:
-
-| Purpose | Algorithm |
-|---|---|
-| The DGEP signature over a technical PID — the `issuerAuth` signature of an [ISO/IEC 18013-5]-compliant PID, and the issuer signature of a [SD-JWT VC]-compliant PID | **ECDSA with curve P-256 and SHA-256** |
-| Device binding — mdoc authentication in [ISO/IEC 18013-5], key binding in [SD-JWT VC] | **ECDSA with curve P-256 and SHA-256** |
-| The digests of attribute values in the Mobile Security Object of an [ISO/IEC 18013-5]-compliant PID, and the disclosure digests of a [SD-JWT VC]-compliant PID | **SHA-256** |
-
-DGEP MAY publish, in a technical profile, further algorithms that a Romanian PID may use for any of those purposes. Every algorithm so published SHALL be included in the [ECCG Agreed Cryptographic Mechanisms]. DGEP SHALL NOT publish a profile that removes an algorithm required above while any technical PID using it remains within its technical validity period.
-
-*The first paragraph transposes requirement OIA_03 in Topic 1 and requirement WUA_04 in Topic 9 in Annex 2 of the ARF. Neither requirement selects an algorithm; both constrain the set one may be selected from.*
-
-*The [ECCG Agreed Cryptographic Mechanisms] is maintained outside this Rulebook and is one of the instruments RO_PID_61 requires this Rulebook to be reviewed against.*
+> **UNDER REVIEW — N21.** This provision is withdrawn pending decision. It will govern the cryptographic algorithms that DGEP, Wallet Units and Relying Parties use when issuing, presenting or verifying a Romanian PID, a Wallet Instance Attestation or a Key Attestation, and the algorithms a Romanian PID uses at the least.
 
 ---
 
@@ -1106,7 +1119,7 @@ This Rulebook is drafted to comply with all applicable requirements in Topic 12 
 
 **What has been assessed, and what has not.** Conformance with Topic 3 is recorded requirement by requirement in **Annex B**, and conformance with Topic 12 and with the template in **Annex C**, each against the revision stated in it. The assertion in the paragraph above is therefore evidenced and not merely made.
 
-**It does not presently hold in full.** Chapter 7 is withdrawn in full, as are Sections 5.3 and 5.4, as Annex D records, and the requirements they transposed are consequently not transposed. Annexes B and C mark every affected row. This Rulebook is not in a state in which it can be notified or assessed as a whole, and Annex D is the list of what has to be settled before it is.
+**It does not presently hold in full.** Chapter 7 and Section 5.4 are withdrawn in full, as is RO_PID_55, as Annex D records, and the requirements they transposed are consequently not transposed. Annexes B and C mark every affected row. This Rulebook is not in a state in which it can be notified or assessed as a whole, and Annex D is the list of what has to be settled before it is.
 
 **Departures.** This Rulebook departs from two requirements of Topic 3 in Annex 2 of the ARF, as Annex B records: PID_12 and PID_19, in leaving a value changed in RNEP to a new logical PID under RO_PID_43 while the existing logical PID continues to be replenished. That is also a departure from requirement VCR_09 in Topic 7, as the note to RO_PID_43 records. It also departs from one requirement of Topic 12, as Annex C records: ARB_33, in that RO_PID_30 requires the scheme of the domestic namespace and type to be published but places no requirement on its registration to reference this Rulebook. Each departure is a national choice, stated where it is made.
 
@@ -1126,7 +1139,7 @@ The Romanian PID therefore carries the six mandatory attributes and the two mand
 
 The domestic attributes rest on a different requirement in each encoding, and the two are not interchangeable. **PID_06 governs the [ISO/IEC 18013-5] encoding**, sitting among the requirements for [ISO/IEC 18013-5]-compliant PIDs: it permits a PID Provider to include attributes not defined in [PID Rulebook] provided they sit in a domestic namespace constructed as that requirement prescribes, which is what Sections 2.7 and 3.1.5 do. **PID_14 and PID_16 govern the [SD-JWT VC] encoding**, where there are no namespaces: PID_14 permits a domestic Verifiable Credential Type extending `urn:eudi:pid:1`, which RO_PID_28 defines, PID_16 requires its claims to be published in an Attestation Rulebook, which Section 4.1.3 does, and ARB_06b constrains how the claim names are formed. This applies in particular to the age assertions in `age_equal_or_over`: age attributes were removed from [PID Rulebook] at its version 1.1, so they are not attributes of the EU-wide PID, and carrying them domestically is what these requirements exist to allow. The unique identifier of the Romanian PID is the CNP, carried as a domestic attribute under RO_PID_19, and the processing policy governing it is a matter of national law.
 
-Requirement ARB_22 obliges this Rulebook to specify all technical details necessary to ensure the interoperability, security and privacy of the Romanian PID. So far as interoperability and security are concerned, the operative provision is RO_PID_55, which fixes the cryptographic algorithms a Romanian PID uses; without it a party building against this Rulebook would have to select an algorithm for itself, and two such parties could conform to this Rulebook and still fail to interoperate. So far as privacy is concerned, the operative provisions are RO_PID_41, which governs the uniqueness of per-attestation elements, and RO_PID_39 and RO_PID_44, which make each technical PID single-use; the provisions governing the operation of the status lists are withdrawn with Chapter 7, and ARB_22 is accordingly only partly satisfied at present. Requirement ARB_02 is addressed in the opening of Chapter 3, ARB_09 in Section 2.1, ARB_30 in RO_PID_26, ARB_33 in RO_PID_30, from which this Rulebook departs, ARB_31, which it does not adopt, RO_PID_29 being reserved, and ARB_28 and ARB_34 in RO_PID_37. ARB_23 and ARB_24a were addressed by provisions now withdrawn; Annex C records the position on each.
+Requirement ARB_22 obliges this Rulebook to specify all technical details necessary to ensure the interoperability, security and privacy of the Romanian PID. So far as interoperability and security are concerned, the operative provision is RO_PID_55, which will fix the cryptographic algorithms a Romanian PID uses and is withdrawn pending review (**N21**); until it is settled a party building against this Rulebook has to select an algorithm for itself. So far as privacy is concerned, the operative provisions are RO_PID_41, which governs the uniqueness of per-attestation elements, and RO_PID_39 and RO_PID_44, which make each technical PID single-use; the provisions governing the operation of the status lists are withdrawn with Chapter 7, and ARB_22 is accordingly only partly satisfied at present. Requirement ARB_02 is addressed in the opening of Chapter 3, ARB_09 in Section 2.1, ARB_30 in RO_PID_26, ARB_33 in RO_PID_30, from which this Rulebook departs, ARB_31, which it does not adopt, RO_PID_29 being reserved, and ARB_28 and ARB_34 in RO_PID_37. ARB_23 and ARB_24a were addressed by provisions now withdrawn; Annex C records the position on each.
 
 Further requirements in this Rulebook comply with or reference the applicable requirements in the ARF and the relevant Implementing Acts.
 
@@ -1134,7 +1147,7 @@ Further requirements in this Rulebook comply with or reference the applicable re
 
 **RO_PID_61** — **DGEP SHALL review this Rulebook against the instruments on which it depends**, as its author and maintainer. The following apply.
 
-- **(a) Instruments.** The instruments are: [PID Rulebook]; Topics 1, 3, 6, 7, 9, 10, 11, 12, 24, 25, 27, 31, 34, 38, 40, 44 and 51 in Annex 2 of the ARF; the [Rulebook template]; [ISO/IEC 18013-5] and [SD-JWT VC], which Chapters 3 and 4 profile; [OpenID4VCI]; [Technical Specification 2] and [Technical Specification 3]; [ECCG Agreed Cryptographic Mechanisms]; [HAIP], [Token Status List], [ETSI TS 119 602], [ETSI TS 119 471], [ETSI TS 119 412-6] and [ETSI TS 119 472-3]; [OIDC], [EKYC], [EKYC Schema] and [IANA-JWT-Claims], from which Chapter 4 takes its claim names; [ISO/IEC 39794-5] and [ISO/IEC 19794-5], which govern the portrait; [Reg. eIDAS 2], [CIR 2015/1502], [CIR 2024/2977], [CIR 2024/2979], [CIR 2024/2980], [CIR 2024/2982] and [CIR 2025/1569]; and [OUG 97/2005] and [Law 119/1996], on which RO_PID_19 rests. **This list is not every instrument this Rulebook cites.** It is those whose revision could require this Rulebook to be amended: the instruments this Rulebook profiles or restates, and those from which it takes a requirement, a permitted set, a claim name or a value. Chapter 9 lists every instrument cited, and an instrument cited there but not here is one cited only for a definition, a code set, a character set, a date or data format, or a notation, whose revision does not bear on the provisions of this Rulebook. **Nor is the list limited to what this Rulebook cites.** A Topic in Annex 2 of the ARF that bears on a PID Provider is reviewed whether or not this Rulebook presently cites it, because a revision of it may create a dependency where none exists today; RO_PID_61(d) requires the assessment outside Topics 3 and 12 on the same footing. Where a review or an amendment introduces a dependency of the first kind on a further instrument, it SHALL be added to this list in the same version. A review SHALL verify that every entry in this list resolves to an instrument that exists, that every instrument in Chapter 9 which is not listed here still meets the criterion for omission, and that every requirement this Rulebook cites is located in the topic or section this Rulebook attributes it to.
+- **(a) Instruments.** The instruments are: [PID Rulebook]; Topics 1, 3, 6, 7, 9, 10, 11, 12, 24, 25, 27, 31, 34, 38, 40, 44 and 51 in Annex 2 of the ARF; the [Rulebook template]; [ISO/IEC 18013-5] and [SD-JWT VC], which Chapters 3 and 4 profile; [OpenID4VCI] and [OpenID4VP]; [Technical Specification 2] and [Technical Specification 3]; [ECCG Agreed Cryptographic Mechanisms]; [HAIP], [Token Status List], [ETSI TS 119 602], [ETSI TS 119 471], [ETSI TS 119 412-6] and [ETSI TS 119 472-3]; [OIDC], [EKYC], [EKYC Schema] and [IANA-JWT-Claims], from which Chapter 4 takes its claim names; [ISO/IEC 39794-5] and [ISO/IEC 19794-5], which govern the portrait; [Reg. eIDAS 2], [CIR 2015/1502], [CIR 2024/2977], [CIR 2024/2979], [CIR 2024/2980], [CIR 2024/2982], [CIR 2025/848] and [CIR 2025/1569]; and [OUG 97/2005] and [Law 119/1996], on which RO_PID_19 rests. **This list is not every instrument this Rulebook cites.** It is those whose revision could require this Rulebook to be amended: the instruments this Rulebook profiles or restates, and those from which it takes a requirement, a permitted set, a claim name or a value. Chapter 9 lists every instrument cited, and an instrument cited there but not here is one cited only for a definition, a code set, a character set, a date or data format, or a notation, whose revision does not bear on the provisions of this Rulebook. **Nor is the list limited to what this Rulebook cites.** A Topic in Annex 2 of the ARF that bears on a PID Provider is reviewed whether or not this Rulebook presently cites it, because a revision of it may create a dependency where none exists today; RO_PID_61(d) requires the assessment outside Topics 3 and 12 on the same footing. Where a review or an amendment introduces a dependency of the first kind on a further instrument, it SHALL be added to this list in the same version. A review SHALL verify that every entry in this list resolves to an instrument that exists, that every instrument in Chapter 9 which is not listed here still meets the criterion for omission, and that every requirement this Rulebook cites is located in the topic or section this Rulebook attributes it to.
 - **(b) Trigger.** On publication of a new version of any of them, DGEP SHALL perform a review without undue delay, and in any event **within three months** of that publication.
 - **(c) Backstop.** Irrespective of whether any such publication has been observed, DGEP SHALL perform a review **at least once every twelve months**.
 - **(d) Scope.** Each review SHALL re-perform the conformance assessments recorded in Annex B and in Annex C; re-perform the equivalent assessment against those requirements of Annex 2 outside Topics 3 and 12 that bear on a PID Provider, and complete it where it has not yet been recorded; verify that the provisions of this Rulebook which restate the content of an instrument still match that instrument; and verify that every cross-reference to an external requirement still resolves and still states what this Rulebook attributes to it. Each review SHALL also verify that `RO_PID_Data_Model.md` still agrees with every provision it restates — Chapters 2, 3 and 4, and what it carries from Chapter 1, Section 5.2 and Section 6.1 — and correct it where it does not.
@@ -1155,6 +1168,7 @@ Further requirements in this Rulebook comply with or reference the applicable re
 | **[CIR 2024/2979]** | Commission Implementing Regulation (EU) 2024/2979 on the core functionality of the European Digital Identity Wallet, as amended by [CIR 2026/1731]. |
 | **[CIR 2024/2980]** | Commission Implementing Regulation (EU) 2024/2980 on the notification to the Commission of electronic identification schemes and of providers, as amended by [CIR 2026/1731]. |
 | **[CIR 2024/2982]** | Commission Implementing Regulation (EU) 2024/2982 on protocols and interfaces, as amended by [CIR 2026/1731]. |
+| **[CIR 2025/848]** | Commission Implementing Regulation (EU) 2025/848 laying down rules for the application of Regulation (EU) No 910/2014 as regards the registration of wallet-relying parties. |
 | **[CIR 2025/1569]** | Commission Implementing Regulation (EU) 2025/1569. Article 8 establishes the catalogue of schemes for the attestation of attributes. |
 | **[CIR 2026/1731]** | Commission Implementing Regulation (EU) 2026/1731 of 15 July 2026 amending Implementing Regulations (EU) 2024/2977, (EU) 2024/2979, (EU) 2024/2980 and (EU) 2024/2982 as regards applicable standards and specifications (OJ L, 2026/1731, 22.7.2026). |
 | **[OUG 97/2005]** | *Ordonanța de urgență a Guvernului* no. 97/2005 on the records, domicile, residence and identity documents of Romanian citizens, republished as amended. Article 6 establishes the CNP. |
@@ -1171,7 +1185,8 @@ Further requirements in this Rulebook comply with or reference the applicable re
 | **[ETSI TS 119 472-3]** | ETSI TS 119 472-3, Electronic Signatures and Trust Infrastructures — Profiles for Attestations of Attributes — Part 3. It profiles the Credential Issuer Metadata a PID Provider publishes, including the `credential_reuse_policy` parameter, which RO_PID_44 does not adopt. RO_PID_61 requires this Rulebook to be reviewed against it. |
 | **[OIDC]** | OpenID Connect Core 1.0. |
 | **[OpenID4VCI]** | OpenID for Verifiable Credential Issuance. |
-| **[HAIP]** | OpenID4VC High Assurance Interoperability Profile. Sections 4 and 6 profile [OpenID4VCI]; Section 6.1 specifies the IETF SD-JWT VC Profile. |
+| **[OpenID4VP]** | OpenID for Verifiable Presentations 1.0. The protocol by which a Romanian PID is presented under RO_PID_48. |
+| **[HAIP]** | OpenID4VC High Assurance Interoperability Profile. Sections 4 and 6 profile [OpenID4VCI]; Annex II to [CIR 2024/2982] applies its Sections 5, 7 and 8 to [OpenID4VP]; Section 6.1 specifies the IETF SD-JWT VC Profile. |
 | **[W3C VCDM v2.0]** | W3C Verifiable Credentials Data Model v2.0. A third attestation format contemplated by Topic 12 in Annex 2 of the ARF, which this Rulebook does not specify. |
 | **[Technical Specification 2]** | European Commission Technical Specification 2 — Notification and publication of provider information, referenced by Topic 31 in Annex 2 of the ARF. |
 | **[Technical Specification 3]** | European Commission Technical Specification 3 — Wallet Unit Attestation, referenced throughout Topic 9 in Annex 2 of the ARF. It governs the content and processing of the Wallet Instance Attestation and the Key Attestation. RO_PID_33 states the processing DGEP performs, and does not adopt compliance with this specification. |
@@ -1214,7 +1229,7 @@ This annex records, requirement by requirement, how this Rulebook satisfies Topi
 
 **Assessed against** Topic 3 in Annex 2 of the ARF, which comprises twenty-two requirements: PID_01 to PID_21, and PID_03a.
 
-> **This assessment no longer holds in full.** Chapter 7 is withdrawn in full, as are Sections 5.3 and 5.4, and the rows below whose transposing provision is withdrawn are marked **not currently transposed**, or **partly transposed** where a provision in force satisfies part of the requirement and the withdrawn one carried the rest. They are not defects to be corrected but requirements awaiting a decision recorded in Annex D. The remaining rows are unaffected, Chapters 2, 3 and 4 being where Topic 3 principally lands.
+> **This assessment no longer holds in full.** Chapter 7 is withdrawn in full, as is Section 5.4, and the rows below whose transposing provision is withdrawn are marked **not currently transposed**, or **partly transposed** where a provision in force satisfies part of the requirement and the withdrawn one carried the rest. They are not defects to be corrected but requirements awaiting a decision recorded in Annex D. The remaining rows are unaffected, Chapters 2, 3 and 4 being where Topic 3 principally lands.
 
 RO_PID_61 requires this assessment to be repeated on publication of a new version of Annex 2 and at least once every twelve months, and requires the version history to record the revision it was last performed against, whether or not anything changed. That date records when this annex was last **verified**, not when it was last **altered**. A reader finding it materially out of step with the current ARF should treat the assessment as unverified and RO_PID_61 as not having been honoured.
 
@@ -1223,7 +1238,7 @@ RO_PID_61 requires this assessment to be repeated on publication of a new versio
 | PID_01 | Comply with all requirements in [PID Rulebook] | Section 1.1, which establishes this Rulebook as a national profile of [PID Rulebook] v1.7; Chapter 8 |
 | PID_02 | Issue every PID in both the [ISO/IEC 18013-5] and the [SD-JWT VC] format | RO_PID_03 |
 | PID_03 | Optional User opt-out from the portrait; if taken, an empty JSON string or CBOR `bstr` | RO_PID_25, which also makes the opt-out available to every User |
-| PID_03a | Relying Party not to retain or export the portrait beyond what data protection law permits | **Not currently transposed** — RO_PID_52 is withdrawn with Sections 5.2 to 5.4; see **N12** |
+| PID_03a | Relying Party not to retain or export the portrait beyond what data protection law permits | **Not currently transposed** — RO_PID_52 is withdrawn with Section 5.4; see **N12** |
 | PID_04 | Attestation type `eu.europa.ec.eudi.pid.1` | RO_PID_21 |
 | PID_05 | Namespace `eu.europa.ec.eudi.pid.1` for the [PID Rulebook] attributes | RO_PID_21 |
 | PID_06 | Domestic namespace constructed from the PID_05 identifier plus the country code | RO_PID_21, giving `eu.europa.ec.eudi.pid.ro.1`; RO_PID_18 and RO_PID_22 confine the domestic attributes to it |
@@ -1259,7 +1274,7 @@ This annex records, requirement by requirement, how this Rulebook satisfies Topi
 
 RO_PID_61 requires this assessment to be repeated on the same terms as the assessment in Annex B.
 
-> **This assessment no longer holds in full**, for the reason given at the head of Annex B. Rows whose satisfying provision is withdrawn are marked accordingly.
+> **This assessment no longer holds in full**, for the reason given at the head of Annex B and because RO_PID_55 is withdrawn. Rows whose satisfying provision is withdrawn are marked accordingly.
 
 **A note on applicability, which governs half of this annex.** Many requirements in Topic 12 are addressed to the Scheme Provider for an Attestation Rulebook *"describing a type of attestation that is a QEAA or a PuB-EAA"*, or *"that is a non-qualified EAA"*. **A PID is none of those three.** Those requirements therefore do not bind this Rulebook by their own terms, and are recorded below as **not applicable**, with a note where this Rulebook satisfies them anyway or where the corresponding obligation reaches it by another route. Recording them as satisfied would misstate the position; omitting them would leave a reader unable to tell whether they had been considered.
 
@@ -1270,7 +1285,7 @@ RO_PID_61 requires this assessment to be repeated on the same terms as the asses
 | ARB_01 | QEAA or PuB-EAA: specify [ISO/IEC 18013-5] and/or [SD-JWT VC] | **Not applicable** — a PID is neither. The formats of a Romanian PID are fixed by PID_04 and PID_05 in Topic 3 and by RO_PID_03, which requires both |
 | ARB_01a | Non-qualified EAA: specify one or more of three formats | **Not applicable** |
 | ARB_01b | [SD-JWT VC] attestations comply with the IETF SD-JWT VC Profile in [HAIP] Section 6.1 | **Satisfied** — Section 4.1, third paragraph |
-| ARB_02 | Analyse whether proximity presentation without the internet must be possible; if so require the mdoc format | **Satisfied** — the analysis is recorded in the opening of Chapter 3, and RO_PID_03 requires the format |
+| ARB_02 | Analyse whether proximity presentation without the internet must be possible; if so require the mdoc format | **Satisfied** — the analysis is recorded in the opening of Chapter 3 and concludes that presentation in proximity without the internet need not be possible, RO_PID_48 providing for remote presentation only; RO_PID_03 requires the format nonetheless |
 | ARB_03 | MAY require the [SD-JWT VC] format, subject to standardisation | **Not exercised** — RO_PID_03 requires both formats on the basis of PID_02, not of this permission |
 | ARB_04 | If a [W3C VCDM v2.0] encoding is specified, reference documents for requesting and verifying it | **Not applicable** — this Rulebook specifies no [W3C VCDM v2.0] encoding |
 | ARB_05 | Specify an attestation type unique within the EUDI Wallet ecosystem | **Satisfied** — RO_PID_21 for the mdoc document type and RO_PID_28 for the `vct`, both of which PID_04 and PID_14 constrain |
@@ -1282,10 +1297,10 @@ RO_PID_61 requires this assessment to be repeated on the same terms as the asses
 | ARB_09 | Specify for each attribute whether its presence is mandatory, optional, or conditional | **Satisfied** — the levels table in Section 2.1 maps each [RFC 2119] level used in this Rulebook onto one of the three, and every attribute table states a level |
 | ARB_10 | MAY define a domestic namespace; all namespace requirements apply to it | **Satisfied** — RO_PID_21 defines it and RO_PID_22 confines the domestic attributes to it |
 | ARB_11 to ARB_21 | QEAA, PuB-EAA or non-qualified EAA: include attributes representing the sets of data in Annexes V and VII of the [Reg. eIDAS 2] | **Not applicable** — a PID is none of the three, and the corresponding content of a PID is fixed by [CIR 2024/2977] and carried in Chapter 2. The trust-anchor location contemplated by ARB_20 and ARB_21 is nonetheless carried, as `trust_anchor` under RO_PID_17 |
-| ARB_22 | Specify all technical details necessary for interoperability, security and privacy | **Partly satisfied** — RO_PID_55 fixes the cryptographic algorithms and is in force. RO_PID_41 governs the uniqueness of per-attestation elements, and RO_PID_39 and RO_PID_44 make each technical PID single-use. The provisions governing the operation of the status lists are withdrawn with Chapter 7; see **N13** |
+| ARB_22 | Specify all technical details necessary for interoperability, security and privacy | **Partly satisfied** — RO_PID_55, which will fix the cryptographic algorithms, is withdrawn; see **N21**. RO_PID_41 governs the uniqueness of per-attestation elements, and RO_PID_39 and RO_PID_44 make each technical PID single-use. The provisions governing the operation of the status lists are withdrawn with Chapter 7; see **N13** |
 | ARB_23 | QEAA or PuB-EAA: specify which revocation mechanism of Topic 7 is supported | **Not applicable by its terms.** It was satisfied nonetheless by RO_PID_56, which is withdrawn with Chapter 7; see **N13** |
 | ARB_24 | Non-qualified EAA: specify whether the type must be revocable | **Not applicable** — the revocability of a PID is governed by VCR_01 and VCR_01b in Topic 7. RO_PID_38 places the Romanian PID outside the short-lived branch of both, and Chapter 7, which is withdrawn, will provide for its revocation; see **N13** |
-| ARB_24a | If revocable, specify the URL for retrieving the status or revocation lists | **Not currently satisfied** — row 6 of the notification table in RO_PID_53 requires the URL to be notified, but RO_PID_56, which fixed it, is withdrawn with Chapter 7; see **N13** and **N9** |
+| ARB_24a | If revocable, specify the URL for retrieving the status or revocation lists | **Not currently satisfied** — RO_PID_56, which will require every technical PID to carry the URL of its status list, is withdrawn with Chapter 7; see **N13** |
 | ARB_25 | Include `attestation_legal_category` as specified in the template, with the value the template specifies | **Satisfied on the basis of [PID Rulebook] Section 2.6, and departed from as against the template** — Section 2.6 and RO_PID_17 carry the attribute with the value `PID`. The template no longer contains that identifier and its three values do not describe a PID; the disagreement is between the EU instruments, and this Rulebook follows [PID Rulebook]. Section C.2 records the same position against the template's Section 2.1 |
 | ARB_26 | Non-qualified EAA: SHOULD define how a Relying Party obtains the trust anchors | **Not applicable** — Chapter 6 and Topic 31 govern the trust anchors of a PID Provider |
 | ARB_27 | *Empty in the assessed revision* | — |
@@ -1313,7 +1328,7 @@ The template is a recommendation under ARB_29 and not a mandate. Where this Rule
 | Section 3.2 | [SD-JWT VC] encoding: the [HAIP] profile, a unique `vct`, claim-name provenance, a selective-disclosure statement for every claim | **Satisfied** — Sections 4.1, 4.1.1 to 4.1.3, 4.2, and RO_PID_26 |
 | Section 3.2 | *"Finally, illustrative examples SHALL be included"* | **Satisfied** — Section 4.3 |
 | Section 3.3 | [W3C VCDM v2.0] encoding | **Not applicable** — the template makes this section conditional on the type supporting that format, and this Rulebook does not specify it |
-| Section 4 | Attestation usage | **Partly satisfied** — Section 5.1, enrolment and issuance, and Section 5.2, the issuance protocol and the lifecycle of technical PIDs, are in force; Sections 5.3 and 5.4, which carry presentation and the restrictions on requesting attributes, are withdrawn; see **N12** |
+| Section 4 | Attestation usage | **Partly satisfied** — Section 5.1, enrolment and issuance, Section 5.2, the issuance protocol and the lifecycle of technical PIDs, and Section 5.3, presentation, are in force; Section 5.4, which carries the restrictions on requesting attributes, is withdrawn; see **N12** |
 | Section 5 | Trust anchors | **Satisfied** — Chapter 6 |
 | Section 6 | Revocation | **Not currently satisfied** — Chapter 7 is withdrawn; see **N13** |
 | Section 7 | Compliance | **Satisfied** — Chapter 8 |
@@ -1327,16 +1342,17 @@ The template is a recommendation under ARB_29 and not a mandate. Where this Rule
 
 This annex registers every provision and section of this Rulebook marked **UNDER REVIEW**. A marking in the text without a row here, or a row here without a marking in the text, is a defect in this Rulebook. Section 1.3 states the convention and the three forms a marking takes.
 
-**Six entries remain.** Three are withdrawn in full — **Chapter 7**, Sections 5.3 and 5.4 and Annex A — and in one, N9, a single value is withdrawn from a provision that otherwise remains in force. Eleven identifiers carry no content; two more, RO_PID_29 and RO_PID_32, are reserved and unused, as Section 1.3 records, and are not under review. This Rulebook cannot presently be notified, implemented against as a whole, or assessed for conformance. This annex is the list of what has to be settled before it can be.
+**Seven entries remain.** Four are withdrawn in full — **Chapter 7**, Section 5.4, RO_PID_55 and Annex A — and in one, N9, a single value is withdrawn from a provision that otherwise remains in force. Nine identifiers carry no content; two more, RO_PID_29 and RO_PID_32, are reserved and unused, as Section 1.3 records, and are not under review. This Rulebook cannot presently be notified, implemented against as a whole, or assessed for conformance. This annex is the list of what has to be settled before it can be.
 
 | # | What is under review | Where | Status |
 |---|---|---|---|
 | **N6** | The national requirements for the `portrait` attribute | RO_PID_24, and the `portrait` row of the table in Section 2.2 | Drafted and marked |
 | **N8** | The division of the duty to keep a valid technical PID available | RO_PID_14 | Drafted and marked |
 | **N9** | The URL carried in the `trust_anchor` attribute | RO_PID_17, and the `trust_anchor` row of the table in Section 2.6 | The **value** of `trust_anchor` is withdrawn; RO_PID_17 itself is in force and requires the attribute. The trust-anchor URL in the examples is a placeholder. The status-list URLs are Chapter 7's and fall under **N13** |
-| **N12** | Sections 5.3 and 5.4. Reserves RO_PID_47 to RO_PID_52 | Sections 5.3 and 5.4 | **Withdrawn** |
+| **N12** | Section 5.4. Reserves RO_PID_50 to RO_PID_52 | Section 5.4 | **Withdrawn** |
 | **N13** | Chapter 7. Reserves RO_PID_56 to RO_PID_60 | Chapter 7, and the example notes in Sections 3.3 and 4.3 | **Withdrawn** |
 | **N16** | Annex A | Annex A | **Withdrawn** |
+| **N21** | The cryptographic algorithms used in issuing, presenting and verifying a Romanian PID, a Wallet Instance Attestation and a Key Attestation | RO_PID_55 | **Withdrawn** |
 
 **What "withdrawn" means.** The provision or section carries no content. Nothing is required or permitted by it, and no conformance assessment can be performed against it. Annexes B and C mark the requirements that are consequently not transposed. **The drafting is not lost**: the text as it stood is retained by DGEP, so that settling an entry is a matter of restoring and amending rather than of drafting afresh.
 
